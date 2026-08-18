@@ -6,7 +6,7 @@
 ---
 
 ## EDUCATION
-**University Name**, *Program Name* — City, State  
+**United States Military Academy** — West Point, New York 
 - School of Engineering and Applied Science: Major (e.g., BSE in Computer Science, Minor in Mathematics) — Month Year  
 - The Wharton School: Major (e.g., BS in Economics, Concentrations in Finance and Management) — Month Year  
 - Cumulative GPA: X.XX/4.0 · **Honors:** Dean’s List (Month Year)  
