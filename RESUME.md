@@ -48,17 +48,7 @@
 
 ---
 
-## HONORS AND AWARDS
-**Competition/Program**, *Award/Recognition* — City, State — Month Year  
-- Bullet explaining project/achievement and your role  
-- Bullet about technical/creative details, tools used, or measurable outcomes  
-
-**Team/Club/Org**, *Recognition* — City, State — Month Year  
-- Bullet summarizing achievement  
-
----
-
 ## SKILLS AND INTERESTS
-**Language:** e.g., Conversational French  
-**Computer Skills:** List of programming languages, tools, software suites  
-**Interests:** List (Basketball | Squash | Soccer | Gaming | etc.)
+**Language:** e.g., Conversational French, Survival Mandarin, Japanese, Spanish  
+**Computer Skills:** Palantir's Maven (Foundry), Agile client, Mil-tech Command and Control Systems (A2C2S, BC3, TacView, TDACs, C2BMC)
+**Interests:** List (Golf| Tennis | Basketball | Fun Facts/Random Trivia | Beatboxing)
