@@ -1,5 +1,5 @@
 
-# Richelbert (Richie) Gaas
+# Richelbert (Richie) Gaas 
 
 ### Richie Gaas is a West Point graduate and military leader transitioning into business and entrepreneurship, with interests spanning defense, artificial intelligence, strategy, and emerging technology. Over more than a decade of service across the United States and Indo-Pacific, he has guided teams through complex environments while developing strengths in strategic planning, organizational management, problem-solving, and people development.
 
