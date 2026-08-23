@@ -1,7 +1,7 @@
 # Richie Gaas
-**Email:** rgaas@hawaii.edu · (661) 444-7682  
+**Email:** rgaas@hawaii.edu · Follow me on linkedin: www.linkedin.com/in/richie-gaas-41bb0930b 
 **School Address:** DLEMBA Cohort 8 Zoom (Online)/Various Places, Honolulu, HI, 96819   
-**Permanent Address:** 91-1800 Makahehi Loop, Ewa Beach, HI, USA
+**Permanent Address:** Undisclosed
 
 ---
 
