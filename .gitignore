@@ -2,19 +2,46 @@
 # Office and OS temp files
 ~$*.xlsx
 ~$*.xlsm
+~$*.xls
 ~$*.docx
+~$*.doc
 ~$*.pptx
+*.xlk
+*.xlb
+
+# macOS metadata
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows metadata
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
 # Editor backups
 *.tmp
 *.bak
+*.swp
+*.swo
 *~
+.vscode/
+.idea/
+
+# Claude Code local/personal settings (permission overrides, not for the team)
+.claude/settings.local.json
 
 # Never publish
 .env
+.env.*
 *.key
 *.pem
 secrets/
+secrets.*
 private/
+credentials.*
+config.local.*
