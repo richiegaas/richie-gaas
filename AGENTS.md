@@ -6,7 +6,10 @@ One-line description of what this repo is and who owns it.
 Canonical file: AGENTS.md. CLAUDE.md points here.
 
 ## Where things are
-- capabilities/<capability>/  a capability, with its spec and model
+- capabilities/<slug>/  a capability, named for itself in kebab-case
+  (e.g. capabilities/marginal-analysis/), with its spec and model. The
+  angle brackets mean "substitute the real slug" — never create a folder
+  literally named <capability>. Ask me for the slug if you don't have it.
 - docs/briefs/          written BEFORE work: scope + hypothesis
 - docs/decisions/       written AFTER work: recommendations
 - analysis/             findings and figures
@@ -17,8 +20,10 @@ Canonical file: AGENTS.md. CLAUDE.md points here.
   at all. If you are not certain which folder a file belongs in, ask me
   before you write it — do not choose for me.
 - Graded files use the exact filename the stage brief gives — lowercase,
-  hyphens, no spaces. Some courses date-stamp (YYYY-MM-DD-lastname-slug.md);
-  the stage page says so when they do.
+  hyphens, no spaces. Some courses date-stamp
+  (YYYY-MM-DD-surname-slug.md, e.g. 2026-08-01-gaas-hedge-framing.md);
+  the stage page says so when they do. Substitute my actual surname —
+  never commit the word "surname" or "lastname" literally.
 - Slugs name the engagement, never the week, the course, or the assignment
   number.
 - Never invent a path or a filename. I will give you the exact one.
@@ -35,7 +40,6 @@ Canonical file: AGENTS.md. CLAUDE.md points here.
 
 ## Documentation
 When work changes, update the document that describes it in the same commit.
-A capability's README names the engagements that exercised it — keep that current.
 
 ## Scope
 Do the work I asked for. If you notice something worth doing that I did not ask
@@ -51,4 +55,13 @@ tell me rather than committing it.
 
 ## Mistakes to avoid (append to this list)
 Record errors here as they happen, so the same one does not repeat.
-- (empty — add the first one when it happens)
+- Committed literal placeholder paths (capabilities/<capability>/spec.md,
+  docs/briefs/<engagement>-brief.md, docs/decisions/<engagement>-memo.md)
+  instead of substituting the real slug — had to delete and redo. It
+  recurred a day later as a nested
+  capabilities/<capability>/capabilities/<capability>/ duplicate.
+- Committed docs/decisions/2026-08-01-lastname-hedge-framing.md — the
+  literal word "lastname" from the naming-convention example, not my
+  actual surname.
+- Used "Update .gitignore" and "Update spec.md" as commit messages —
+  no "why", the exact word this file forbids.
