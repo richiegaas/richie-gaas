@@ -1,4 +1,3 @@
-
 ---
 type: brief
 engagement: perfect-competition
