@@ -17,7 +17,7 @@ One assumption is that I will be able to yield all vegetables that I harvested, 
 to test if you had more time.
 
 ## Hypothesis
-"I expect 20 carrot beds, 30 mesclun beds, and 14 tomato beds, because this would maximize efficiency in terms of optimizing cost and wages, and because because tomatoes earn about four times per bed and I doubt the labor penalty closes that gap”." 
+"I expect 20 carrot beds, 30 mesclun beds, and 14 tomato beds, because this would maximize efficiency in terms of optimizing cost and wages, and because because tomatoes earn about four times per bed and I doubt the labor penalty closes that gap."
 
 ## How I would know I was wrong
 I would know I was wrong if the costs of the plan from my hypothesis is more expensive than the right answer. 
