@@ -1,1 +1,1 @@
-<!-- placeholder: replace with Claude-specific instructions -->
+<See AGENTS.md for AI conventions in this repository>
