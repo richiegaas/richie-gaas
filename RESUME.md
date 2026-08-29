@@ -11,7 +11,6 @@
 
 **California State University** — Bakersfield, California
 - Political Science Department: Political Science July 2010 - May 2011
-- Cumulative GPA: N/A
 
 
 ---
