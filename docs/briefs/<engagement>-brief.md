@@ -16,9 +16,7 @@ The problem is that I have a total of 64 beds of crops and I do not know what co
 One assumption is that I will be able to yield all vegetables that I harvested, there will not be a bed of vegetables that spoils or that I cannot harvest. Second assumption is that pest pressure, harvest bottlenecks, and walking time do not affect the ability to reap 100% of all crops I planted in one season. Third assumption is that the farmers' market sets the prices of these crops, not me. Fourth assumption is that myself and four temporary workers are all that's needed to successfully and efficiently plant these crops and harvest. The assumptions you are taking as given, and which of them you would want to test if you had more time.
 
 ## Hypothesis
-"I expect X because Y." Real quantities, and the mechanism you think decides
-it. You are not judged on being right. A hedged prediction that would survive
-any outcome is the only kind that is worthless.
+"I expect 20 carrot beds, 30 mesclun beds, and 14 tomato beds, because this would maximize efficiency in terms of optimizing cost and wages, and because because tomatoes earn about four times per bed and I doubt the labor penalty closes that gap."
 
 ## How I would know I was wrong
 The observation that would falsify the hypothesis above.
