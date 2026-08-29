@@ -8,15 +8,11 @@
 ## EDUCATION
 **United States Military Academy** — West Point, New York 
 - Department of Social Sciences: B.S. in International Relations — May 2015   
-- Cumulative GPA: 2.7/4.0
 
 **California State University** — Bakersfield, California
 - Political Science Department: Political Science July 2010 - May 2011
 - Cumulative GPA: N/A
 
-**Cesar E. Chavez High School** — Delano, California — June 2010 
-- SAT Scores: Math 630 | Writing 620 | Reading 580  
-- ACT Scores: Composite Score: 28 | English (26), Mathematics (31), Reading (30), Science (25)
 
 ---
 
@@ -51,4 +47,4 @@
 ## SKILLS AND INTERESTS
 **Language:** e.g., Conversational French, Survival Mandarin, Japanese, Spanish  
 **Computer Skills:** Palantir's Maven (Foundry), Agile client, Mil-tech Command and Control Systems (A2C2S, BC3, TacView, TDACs, C2BMC)
-**Interests:** List (Golf| Tennis | Basketball | Fun Facts/Random Trivia | Beatboxing)
+**Interests:** (Golf| Tennis | Basketball | Fun Facts/Random Trivia | Beatboxing)
