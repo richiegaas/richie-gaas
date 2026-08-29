@@ -6,13 +6,14 @@
 - **Result/Change:** [ChatGPT delivered a PDF format 1-page resume]
 
 
-## Prompt [2]
+## Prompt [3]
 - **Date:** 2026-08-18
 - **Prompt:** 
-  > [Here is a draft bio about me. I want you to condense it into a 150-200 word bio using the following structure: 
-**Introduction**: Your name, role (e.g., “aspiring agriculture entrepreneur”), and key background details.
+# Prompt log
 
-- **Focus Areas**: Your primary interests or areas of expertise (e.g., accounting, private equity, etc).
-- **Achievements**: Relevant accomplishments or experiences (education, work, certifications, or personal projects).
-- **Goals**: Your short-term and long-term aspirations.]
-- **Result/Change:** [ChatGPT delivered a condense BIO that needed a little more refinement]
+| Date | Tool | What I asked | What I got | What I did with it |
+|---|---|---|---|---|
+| 2026-08-26 | Claude (web) | Why is my MC column falling between beds 5 and 7? | Pointed at the wage switch when permanent hours run out | Verified in the sheet; kept it and explained the dip in the analysis |
+| 2026-08-27 | Claude Code | Draft the .gitignore for an Excel-heavy repo | Standard Office and OS patterns | Read it, added ~$*.xlsm, committed |
+
+## Errors caught
