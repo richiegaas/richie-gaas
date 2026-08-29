@@ -2,7 +2,7 @@
 # AI conventions
 
 ## About this repository
-One-line description of what this repo is and who owns it.
+This repo is used for the BUS 626 Macro- and Micro- Economics with the DLEMBA 8 Cohort. Richie Gaas owns this repo.
 Canonical file: AGENTS.md. CLAUDE.md points here.
 
 ## Where things are
