@@ -4,7 +4,7 @@ engagement: perfect-competition
 capability: marginal-analysis
 date: 2026-09-04
 audience: "The owner-operator"
-recommendation: "Plant 14 tomato, 20 carrot, 30 mesclun"
+recommendation: 
 evidence: analysis/perfect-competition-analysis.md
 ---
 
