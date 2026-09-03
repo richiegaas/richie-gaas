@@ -4,7 +4,7 @@ engagement: perfect-competition
 capability: marginal-analysis
 date: 2026-08-24
 status: committed          # committed | superseded
-hypothesis: "Mesclun-heavy mix; the revenue is greater than the labor costs; 34% of total revenue earned will e used for labor costs"
+hypothesis: "Mesclun-heavy mix; the revenue is greater than the labor costs; 34% of total revenue earned will be used for labor costs"
 ---
 
 # <Engagement> — engagement brief
