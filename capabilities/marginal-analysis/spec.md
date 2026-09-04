@@ -28,11 +28,11 @@ This model will support the decision of how many crops to plant by type. This mo
 | 'DIM_PCT (CAR)  | 2.50% | per bed | Case scenario, crop table |
 | 'DIM_PCT (MES)  | 1.25%| per bed| Case scenario, crop table|
 | 'SEASON'        | 36 | Weeks | Case scenario, crop table |
-| 'FIXED COSTS'   | $20,000| for 64 beds total | Case scenario, crop table|
-| 'FARMER COST'   | $50,000| per 720 field hours | Case scenario, crop table|
-| 'FARMER RATE'   | $34.72| per 1 hour | Case scenario, crop table|
-| 'TEMP WORKER COST'| $25,000| per worker | Case scenario, crop table|
-| 'TEMP WORKER RATE'| $17.36| per 1 hour | Case scenario, crop table|
+| 'EXPLICIT COSTS'   | $20,000| for 64 beds total | Case scenario, crop table|
+| 'MAX FARMER COST'   | $50,000| only spends half her time in the field | Case scenario, crop table|
+| 'FARMER RATE'   | $34.72| per 1 hour, max 720 field hours| Case scenario, crop table|
+| 'MAX TEMP WORKER COST'| $25,000| max 1,440 hours | Case scenario, crop table|
+| 'TEMP WORKER RATE'| $17.36| per 1 hour, max 1,440 hours | Case scenario, crop table|
 | 'TOM_MAX_BEDS | 20 | for Tomatoes | Case scenario, crop table|
 | 'CAR_MAX_BEDS | 20 | for Carrots |Case scenario, crop table|
 | 'MES_MAX_BEDS | 30 | for Mescluns | Case scenario, crop table |
@@ -40,14 +40,13 @@ This model will support the decision of how many crops to plant by type. This mo
 
 ## Structure
 Sheet 1: Inputs
-Sheet 2: Optimization, q per crop is chosen, set MC=Price
-Sheet 3: Calculation: LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q
-Sheet 4: Recommendation: how many Tomato, Carrot, and Mesclun beds should we have, and what is the total price, what is the total cost?
+Sheet 2: Calculation: LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q
+Sheet 3: Recommendation: how many Tomato, Carrot, and Mesclun beds should we have, and what is the total price, what is the total cost? 
+Sheet 4: Optimization, q per crop is chosen, set MC=Price. 64 is the max number beds allowed. Build one joint constrained optimization. The three crops are optimized jointly against the shared labor-hour and land constraints
 
 ## Calculation logic
 
   LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q
-  PRICE (P) = Marginal Cost (MC)
   q is the number of beds. If there is 1 bed, q=1. If there are 5 beds, q=5.
   LABOR_HRS = hours spent per bed per week by crop
   Labor Costs for Farmer = 34.72 x HRS_PER_BED x 36 WEEKS
@@ -55,12 +54,13 @@ Sheet 4: Recommendation: how many Tomato, Carrot, and Mesclun beds should we hav
   Weekly labor-hour capacity constraint = 40 hours per week
   Q must be a whole number
   Revenue = Crop Price x q, where price is fixed regardless of how many beds are planted.
+  Farmer covers hours up to the 40 hr/week cap, and any hours above that get billed to temp worker(s) at $17.36/hr.
   
 
 
 ## Conventions
 For hours, round to the nearest minute.
-For USD, round to the nearest 10th cent.
+For USD, round to the nearest 10 cent.
 
 
 ## Validation rules
@@ -73,10 +73,48 @@ Total labor costs
 Total Revenue
 Total Labor Costs for temp workers
 In perfect competition, Total Profit. Profit = Revenue - Total Costs. Total Costs = Labor Costs for Farmer + Labor Costs for Temp Workers + Fixed Costs
-Fixed Costs = TOM_FERT_COST + CAR_FERT_COST + MES_FERT_COST
+Additional Costs = TOM_FERT_COST x(q) + CAR_FERT_COST x (q) + MES_FERT_COST x (q)
 
 ## Audit findings
-After a first run of my spec description through Claude, here were the errors, concerns, and recommendations. I've adjusted the spec to accommodate Claude:
+AUDIT # 2: Made better definitions and clarified some concerns:
+The Fixed Costs contradiction. The Inputs table defines 'FIXED COSTS' as $20,000 for 64 beds total, but the Outputs section separately defines Fixed Costs = TOM_FERT_COST + CAR_FERT_COST + MES_FERT_COST (= $880 + $440 + $880 = $2,200). These are two different numbers for the same term. A builder would have to pick one — most likely the Outputs formula, since it's closer to where the number is actually consumed — and treat the $20,000 input row as unused.
+Whether fertilizer cost scales with q. The Inputs table labels TOM_FERT_COST etc. as "USD per 1 bed," implying it should scale with quantity, but the Outputs formula sums the three crop constants once, with no q multiplier. A builder would guess fertilizer cost is being treated as a flat, per-season constant regardless of how many beds are planted (which is also why it landed under "Fixed Costs").
+The missing q in the labor-cost formulas. Labor Costs for Farmer = 34.72 x HRS_PER_BED x 36 WEEKS has no q term at all — it doesn't grow with the number of beds, even though LABOR_HRS for (q) (defined one line earlier) explicitly does. A builder would almost certainly guess this is meant to be FARMER_RATE x LABOR_HRS(q) and silently substitute it in, rather than build the formula exactly as written.
+How many temp workers, and when they kick in. Labor Costs for 1 Temp Worker is defined per worker, but nothing says how many temp workers are hired or what triggers hiring one. Given FARMER RATE ($34.72) is exactly double TEMP WORKER RATE ($17.36), and the weekly cap is 40 hrs/week × 36 weeks = 1,440 hours/season, a builder would probably guess: farmer covers hours up to the 40 hr/week cap, and any hours above that get billed to temp worker(s) at $17.36/hr. That mechanism is never stated.
+FARMER COST and TEMP WORKER COST — are these used at all? The actual cost formulas run off FARMER RATE and TEMP WORKER RATE (a $/hour figure), not off FARMER COST ($50,000) or TEMP WORKER COST ($25,000). A builder would likely guess these two rows are just background context and leave them out of every formula. (Also, $50,000 ÷ 720 hours = $69.44/hr, not the stated $34.72/hr — the two farmer numbers don't reconcile with each other, which reinforces the guess that FARMER COST isn't actually wired into anything.)
+Whether TOM_MAX_BEDS/CAR_MAX_BEDS/MES_MAX_BEDS cap the optimization. They sum to 70 beds, but 'FIXED COSTS' describes "64 beds total," a different number. A builder would have to guess whether 64 is a real land constraint that Sheet 2's MC = Price search must respect (on top of the per-crop caps), or just leftover context tied to the now-superseded $20,000 figure.
+Whether the three crops are optimized independently or jointly. Sheet 2 says "q per crop is chosen, set MC=Price," which reads as three separate, unconstrained optimizations. But all three crops draw on the same farmer/temp labor pool and (possibly) the same 64-bed land cap. A builder would have to guess whether to run three independent P=MC solves and then check the shared constraints after the fact, or build one joint constrained optimization.
+How to land on an integer q under P = MC. Since q must be a whole number, exact equality between price and marginal cost usually won't fall on an integer. A builder would likely guess "largest q where MC(q) ≤ Price," but that rule isn't stated.
+Whether Marginal Cost includes fertilizer. Given fertilizer is bucketed as a flat Fixed Cost (see above), a builder would probably guess MC for the P=MC rule is derived purely from the labor-cost formula (via the (1+DIM_PCT)^q growth term), not from fertilizer.
+Discrete vs. continuous marginal cost. Nothing says whether MC(q) is Cost(q) − Cost(q−1) or a calculus derivative of the exponential term. A builder would likely guess the discrete difference, since q is constrained to whole numbers.
+Why "36 WEEKS" is hardcoded instead of referencing 'SEASON'. The 'SEASON' input is defined as 36 weeks, but the formulas write the literal 36 WEEKS rather than the named input. A builder would guess these are meant to be the same value and use SEASON in the actual build.
+Rounding: "nearest 10th cent." Could mean nearest $0.10 or nearest $0.001 (a tenth of a cent). A builder would probably guess $0.001, reading "10th" as "one-tenth of a cent," but the phrasing supports either.
+Sheet ordering. Sheet 2 (Optimization) is listed before Sheet 3 (the LABOR_HRS calculation it presumably depends on). A builder would guess the sheet numbers don't reflect a strict dependency order and build the calculation logic first regardless of sheet number.
+"Total price" in Sheet 4. The Structure section asks for "what is the total price," but Outputs only defines "Total Revenue." A builder would guess these are meant to be the same thing.
+2. Undefined terms
+
+MC / Marginal Cost (as an actual formula, not just the P=MC rule) · field hours (unit on FARMER COST) · total price (Sheet 4, distinct from "Total Revenue") · "fixed costs are not changeable or neglected" (Purpose) · the "64 beds total" constraint (never tied to an explicit rule) · HRS_PER_BED (still a generic stand-in for the three crop-specific *_HRS inputs) · the DIM_PCT (TOM) / (CAR) / (MES) naming pattern (differs from the underscore-prefixed convention used everywhere else, e.g. TOM_PRICE) · how many temp workers exist / are hired
+
+3. Questions with answers missing from the document
+Which is correct: 'FIXED COSTS' = $20,000 for 64 beds, or Fixed Costs = TOM_FERT_COST + CAR_FERT_COST + MES_FERT_COST ($2,200)? Right now the document states both.
+Does fertilizer cost scale with the number of beds planted (as its "per 1 bed" unit suggests), or is it a flat cost regardless of q (as the Outputs formula computes it)?
+Should Labor Costs for Farmer and Labor Costs for 1 Temp Worker actually be functions of q (i.e., built from LABOR_HRS(q)), or are they genuinely meant to be flat, quantity-independent numbers as literally written?
+How many temp workers can be hired, and what determines when a temp worker is used instead of the farmer — is it hours beyond the 40 hr/week cap?
+Are FARMER COST ($50,000/720 hrs) and TEMP WORKER COST ($25,000/worker) used in any calculation, or are FARMER RATE/TEMP WORKER RATE the only ones actually wired into the model?
+FARMER COST implies $69.44/hr (50,000 ÷ 720), but FARMER RATE is $34.72/hr — which is correct, and what does the other number represent?
+Is there a real total-bed (land) constraint the optimization must respect, and is it 64 beds, or the sum of the per-crop max beds (70)?
+Are TOM_MAX_BEDS, CAR_MAX_BEDS, and MES_MAX_BEDS hard caps on Sheet 2's optimization, overriding MC = Price if the unconstrained optimum would exceed them?
+Are the three crops optimized independently, or jointly against the shared labor-hour and land constraints?
+When MC = Price doesn't land on a whole number, what integer rule should be used — largest q with MC(q) ≤ Price, nearest q, something else?
+Does Marginal Cost (for the P=MC rule) include fertilizer, or only labor?
+Is Marginal Cost computed as a discrete step (Cost(q) − Cost(q−1)) or a derivative of the formula?
+Should the formulas reference the 'SEASON' input, or is hardcoding "36 WEEKS" intentional?
+Does "round to the nearest 10th cent" mean nearest $0.10 or nearest $0.001?
+Is "total price" in Sheet 4 the same thing as "Total Revenue" in Outputs?
+
+
+
+AUDIT # 1: After a first run of my spec description through Claude, here were the errors, concerns, and recommendations. I've adjusted the spec to accommodate Claude:
 1. Places a builder would have to guess
 WEEKS in LABOR_HRS(q) = q x HRS_PER_BED x WEEKS x (1 + DIM_PCT)^q — never appears in the Inputs table. A builder would invent a season length (12? 16? 52 weeks?).
 A labor rate in USD/hour — nothing converts hours to dollars, yet "Total labor costs" is a required output and LABOR_HRS is in hours. A builder would invent a $/hr figure or, worse, silently treat hours as if they were dollars.
