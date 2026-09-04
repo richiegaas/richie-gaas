@@ -1,47 +1,40 @@
-<!-- PR TARGET: https://github.com/richiegaas/richie-gaas | Stage 1.1 (2.5 pts) -->
-# Stage 1.1 review — engagement brief · **80 / 100** (B-) · 2.00 / 2.5 pts
+<!-- PR TARGET: https://github.com/richiegaas/richie-gaas | Stage 1.1 -->
+# Stage 1.1 review — engagement brief
 
 **Brief:** [`docs/briefs/perfect-competition-brief.md`](https://github.com/richiegaas/richie-gaas/blob/main/docs/briefs/perfect-competition-brief.md)
 
-> Graded 2026-08-31, first pass on this brief. You wrote a lot and the effort is visible. There is one misreading in it that is worth more to you than the score is, so read the section under the breakdown before anything else.
+> Re-graded 2026-09-04. Your previous result sat on the floor rather than on a total you had earned. This one is earned on merit. You fixed the misreading that was doing the most damage, and you fixed it properly rather than papering over it.
 
-| Criterion | Earned | Notes |
-|---|---|---|
-| Problem restated in your own voice | 22 / 30 | It is clearly your own writing and it is thorough — you have the 64 beds, the $20,000 fixed costs, the farmer's 720 hours at $34.72, the four temporary workers at 1,440 hours and $17.36, and every per-crop parameter. The eight points off are two things. First, this is transcription rather than restatement: every case number is in there, in one paragraph, in the order the case presents them, and the section never says what the numbers do to each other. Second, and more consequentially, two of the descriptions are wrong in a way that changes the problem — see below. |
-| Hypothesis names a specific mix | 22 / 25 | 20 carrot, 30 mesclun, 14 tomato — specific and committed, and inside the caps. Three points off because your frontmatter contradicts your body. The frontmatter says "Tomato-heavy mix; the labor penalty does not close the revenue gap." The body plants 14 tomato beds against 50 beds of everything else, which is the least tomato-heavy mix in this cohort. Both cannot be your prediction, and in Stage 3 you compare the model against what you wrote. |
-| Economic mechanism | 12 / 25 | This is where the points are, and the problem is that the mechanism you state argues against the mix you chose. Your stated reason is "tomatoes earn about four times per bed and I doubt the labor penalty closes that gap." If that is true, the farm should plant every tomato bed it is allowed — the revenue advantage survives, so keep buying it. But you predict 14 of 20, which is a prediction that the penalty does close the gap before the cap. The reasoning and the numbers point in opposite directions, and neither one is defended against the other. |
-| Falsifiability and process | 6 / 20 | "I would know I was wrong if the costs of the plan from my hypothesis is more expensive than the right answer." That cannot fail — the right answer is by definition the one with the best profit, so any other plan is worse. The sentence is guaranteed true whatever the model returns, which means it tests nothing. Your "What I am assuming" section also still carries the template's instruction text at the end: "The assumptions you are taking as given, and which of them you would want to test if you had more time." |
-| **Raw total** | **62 / 100** | — |
-| **Floor applied** | **+18** | 80% floor: a committed brief that states the problem and names a specific mix |
-| **Final** | **80 / 100** | floored |
+| Criterion | Where it stands |
+|---|---|
+| Problem restated in your own voice | Thorough and entirely in your own voice, and every fact in it is now correct. Two corrections landed and both mattered. "Each tomato bed renders $8,800 in revenue" — previously the price was described as a cost, which inverts the whole decision. And the diminishing-returns rate is now "the diminishing returns on the costs of labor is at a loss rate of 10% of labor hours spent per bed" — labor hours, not harvest. What is still open is length and shape: the section walks through every input in sentence form, which is closer to reading the table aloud than to restating the problem, and it never says what it costs the farm to decide this badly. |
+| Hypothesis names a specific mix | 20 carrot, 30 mesclun, 14 tomato — 64 beds exactly, every crop inside its cap. Unchanged and still exactly what this criterion asks for. |
+| Economic mechanism | The mechanism is now internally consistent, which it was not before: your frontmatter said tomato-heavy while your body predicted the least tomato-heavy mix in the cohort, and the frontmatter now says mesclun-heavy in agreement with the body. What is still open is that the stated reason argues against the prediction. "Tomatoes earn about four times per bed and I doubt the labor penalty closes that gap" is a case for more tomatoes, and you predict 14 rather than 20. The rates you have correctly identified are never actually used to locate where the crossover falls. |
+| Falsifiability and process | Four conditions where there was one circular one, and three of the four carry numbers. "If the carrots come back below 20 beds, then something stopped them before their cap and I do not know what" is the right shape — it names an observation and admits what it would leave unexplained. What is still open is a tolerance on each, and the fourth condition is a compound of the other three rather than an independent test. |
 
-### The misreading, and why it matters more than the score
+### The correction you made is the most important one available in this case
 
-You describe the diminishing-returns rate as a reduction in harvest: "I have diminishing returns on how many Tomatoes I harvest per bed, which is 10% per bed." That is not what it is, and this is the single most consequential thing you could get wrong in this case.
+Your previous brief described the diminishing-returns rate as a reduction in how much you harvest. It is a rise in the labor hours each bed requires. Revenue per bed never changes — the farm is a price taker and the price is fixed by assumption.
 
-The rate multiplies labor hours, not yield. Revenue per bed is fixed — the twentieth tomato bed sells for the same $8,800 as the first, because the farm is a price taker and nothing about planting more changes what a bed earns. What changes is what it costs to work: the labor formula is q x hours-per-bed-per-week x 36 x (1 + rate) to the power of q, so at ten tomato beds the labor requirement is not ten times the first bed's, it is about 2.6 times that.
+Those two readings predict similar-looking answers and they are not the same model. Under the yield reading the crop stops because it stops earning; under the labor reading it stops because it starts costing. Only the second one reproduces the case, and a workbook built on the first cannot be reconciled against any published figure.
 
-This matters because your entire prediction rests on a comparison between the revenue advantage and the labor penalty. If you model the penalty as falling revenue, both sides of that comparison move and the crossing lands somewhere else entirely. In Stage 1.2 the workbook is built from a specification, and a specification that says the rate reduces yield produces a model that is internally consistent, error-free, and wrong by tens of thousands of dollars.
+You caught it and rewrote every affected sentence. That is the difference between this brief and the last one, and it is worth more to you in Stage 1.2 than the marks it moved here.
 
-The second one is smaller but worth fixing in the same pass: you write "each price per bed costs $8,800." That figure is revenue, not cost — it is what a bed earns. Fertilizer at $880 and labor are the costs.
+### The one thing left in the argument
 
-### How to get this into the eighties, and it is about an hour
+Read your own mechanism sentence back: tomatoes earn about four times per bed and you doubt the labor penalty closes that gap. If that is true, tomatoes should run to their cap of 20. You predict 14.
 
-- Fix the two definitions above. That is the one that matters beyond this stage.
+One of the two has to give. Work out roughly where the crossover falls and the sentence will resolve itself: one tomato bed is 2.50 x 36 = 90 hours, and q beds are q x 90 x 1.10^q. At 14 beds that is about 4,785 hours; at 20 it is about 12,110. The marginal hours late in the crop are temporary-worker hours at about $17.36, and each bed still earns $8,800 and costs $880 in fertilizer.
 
-- Make the frontmatter agree with the body. Decide which prediction is actually yours.
+Whatever number that gives you, the sentence underneath it should say the labor penalty *does* close the gap, and at roughly which bed. That is the argument your prediction has been missing.
 
-- Resolve the contradiction in your mechanism. Either the labor penalty closes the revenue gap — in which case say roughly where, and 14 follows — or it does not, in which case predict close to 20 tomato beds and defend that. Both are respectable. Holding both is not.
+### Your Stage 1.2 specification is reviewed separately and you should read it today
 
-- Replace the falsification sentence with two or three that could actually fail. "If the model plants more than 17 tomato beds, the labor penalty is weaker than I assumed." "If carrots come back below 20 beds, then something stopped them before their cap and I do not know what."
+The specification grew from under two thousand bytes to nearly twenty-one thousand and it is now genuinely about this case, with the labor function written correctly. The audit rounds you ran against it are the most thorough gap-finding anyone in this cohort has done.
 
-- Delete the leftover template line from the assumptions section.
+The problem is that you documented the gaps and did not close them. Your own audit lists the farmer's hour cap contradicting itself, fertilizer defined but never entering profit, "Fixed Costs" used but no longer defined, and the missing q in two labor-cost formulas — and all four are still in the specification body. And model.xlsx is still one byte while the frontmatter says status: built.
 
-### On sequence
-
-Your repository has a Stage 1.2 specification marked "built" with an empty 1-byte model.xlsx beside it, and a Stage 3 decision memo dated 4 September recommending 14 / 20 / 30 — written before any model exists. I say more about that in your Stage 0 comment, and none of it is penalized here.
-
-The short version: this brief is the foundation those two documents are supposed to rest on, and the mechanism in it is currently self-contradictory. Fixing the brief first makes the spec easier and the memo honest. Doing it in the other order means the memo is a guess with a template around it, and Stage 3 grades whether the recommendation follows from the workbook.
+That stage is due 6 September. The separate review works through it.
 
 ---
 
@@ -51,9 +44,11 @@ Treat this PR the way an analyst treats feedback from a senior reviewer — a re
 
 1. **Read it yourself first.** Form your own view before you change anything. Disagreeing *with a documented reason* is a legitimate, senior response.
 2. **Stress-test it with an LLM.** Paste this review and your brief into your assistant and ask it to (a) explain anything you are unsure of, and (b) argue the *other side* — where might the reviewer be wrong, and what would you give up by making each change.
-3. **Then write the changes yourself.** For a brief, this matters more than usual: a hypothesis you did not generate cannot be honestly compared against your model in Stage 3, and that comparison is the entire point of writing the brief first.
+3. **Then write the changes yourself.** For a brief this matters more than usual: a hypothesis you did not generate cannot be honestly compared against your model in Stage 3, and that comparison is the entire point of writing the brief first.
 4. **Close the loop.** Reply in this thread with what you changed and what you pushed back on, then commit and push.
 
-*One standing rule for this stage: do not revise your hypothesis to match what your model later tells you. If the model contradicts the brief, that is a finding, not an error — Stage 3 asks you to explain the gap, and a brief quietly edited to be right afterwards has nothing left to explain.*
+*One standing rule: do not revise your hypothesis to match what your model later tells you. If the model contradicts the brief, that is a finding, not an error.*
+
+*Your score and the per-criterion breakdown are in your Lamaku comment, not here — this repository is public.*
 
 — Adam
