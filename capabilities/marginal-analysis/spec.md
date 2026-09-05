@@ -3,7 +3,7 @@ type: spec
 capability: marginal-analysis
 engagement: perfect-competition
 date: 2026-08-26
-status: draft            # draft | built | audited
+status: built            # draft | built | audited
 built_with: "Claude Code, from this file"
 ---
 
