@@ -16,7 +16,7 @@ The problem is that I have a total of 64 beds of crops and I do not know what co
 One assumption is that I will be able to yield all vegetables that I harvested, there will not be a bed of vegetables that spoils or that I cannot harvest. Second assumption is that pest pressure, harvest bottlenecks, and walking time do not affect the ability to reap 100% of all crops I planted in one season. Third assumption is that the farmers' market sets the prices of these crops, not me. Fourth assumption is that myself and four temporary workers are all that's needed to successfully and efficiently plant these crops and harvest.
 
 ## Hypothesis
-"I expect 20 carrot beds, 30 mesclun beds, and 14 tomato beds, because this would maximize efficiency in terms of optimizing cost and wages, and because because tomatoes earn about four times per bed and I doubt the labor penalty closes that gap."
+"I expect 20 carrot beds, 30 mesclun beds, and 14 tomato beds, because this would maximize efficiency in terms of optimizing cost and wages, and because tomatoes earn about four times more per bed compared to carrots and mesclun, I believe the labor penalty closes that gap at 10 tomato beds."
 
 ## How I would know I was wrong
 If the model plants less than 25 mesclun beds, the labor penalty for mesclun beds is stronger than I assumed. 
