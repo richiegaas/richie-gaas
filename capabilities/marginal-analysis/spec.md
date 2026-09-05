@@ -28,11 +28,11 @@ This model will support the decision of how many crops to plant by type. This mo
 | 'DIM_PCT (CAR)  | 2.50% | per bed | Case scenario, crop table |
 | 'DIM_PCT (MES)  | 1.25%| per bed| Case scenario, crop table|
 | 'SEASON'        | 36 | Weeks | Case scenario, crop table |
-| 'FIXED COSTS'   | $20,000| for 64 beds total | Case scenario, crop table|
-| 'MAX FARMER COST'   | $50,000| only spends 720 hours in the field in one season | Case scenario, crop table| descriptive context |
-| 'FARMER RATE'   | $34.72| per 1 hour, max 20 hours per week| Case scenario, crop table|
+| 'FIXED COSTS'   | $20,000| to operate entire farm | Case scenario, crop table|
+| 'MAX FARMER COST'   | $24,998 | for 720 hours in the field in one season | Case scenario, crop table| descriptive context |
+| 'FARMER RATE'   |50,000/1,440 | Case scenario, crop table|
 | 'MAX TEMP WORKER COST'| $25,000| max 1,440 hours | Case scenario, crop table| descriptive context |
-| 'TEMP WORKER RATE'| $17.36| per 1 hour, max 1,440 hours | Case scenario, crop table|
+| 'TEMP WORKER RATE'| 25,000/1,440| Case scenario, crop table|
 | 'TOM_MAX_BEDS | 20 | for Tomatoes | Case scenario, crop table|
 | 'CAR_MAX_BEDS | 20 | for Carrots |Case scenario, crop table|
 | 'MES_MAX_BEDS | 30 | for Mescluns | Case scenario, crop table |
@@ -42,6 +42,7 @@ This model will support the decision of how many crops to plant by type. This mo
 Sheet 1: Inputs
 Sheet 2: Calculation: LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q
 Sheet 3: Optimization, number of beds (q) per crop is chosen. 64 is the max number beds allowed. Build one joint constrained optimization. The three crops are optimized jointly against the shared labor-hour and land constraints
+Sheet 4: Number of Temporary Workers that should be hired
 Sheet 4: Recommendation: how many Tomato, Carrot, and Mesclun beds should we have, and what is the total revenue, what is the total cost? 
 
 
@@ -50,13 +51,20 @@ Sheet 4: Recommendation: how many Tomato, Carrot, and Mesclun beds should we hav
   LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q
   q is the number of beds. If there is 1 bed, q=1. If there are 5 beds, q=5.
   LABOR_HRS = hours spent per bed per week by crop
-  Labor Costs for Farmer = 34.72 x Hours worked per bed (q) x 36 WEEKS
-  Labor Costs for 1 Temp Worker = 17.36 x Hours worked per bed (q) x 36 WEEKS
-  Weekly labor-hour capacity constraint = 40 hours per week
+  Labor Costs for Farmer = $34.72 x Crop Hours worked per bed x Number of beds (q) 
+  Labor Costs for 1 Temp Worker = $17.36 x Crop Hours worked per bed x Number of beds (q)
   Q must be a whole number
-  Revenue = Crop Price x q, where price is fixed regardless of how many beds are planted.
-  Farmer covers hours up to the 40 hr/week cap, and any hours above that get billed to temp worker(s) at $17.36/hr.
-  
+  Revenue = Crop Price x Number of beds (q), where price is fixed regardless of how many beds are planted.
+  Farmer work hours have a 720 hour cap, and any hours above that get billed to temp worker(s) at $17.36/hr.
+  Profit = Revenue - Total Costs. 
+  Total Costs = $20,000 in Fixed Costs + Labor Costs for Farmer + Labor Costs for Temp Workers + Fertilizer costs
+  Fertilizer Costs = TOM_FERT_COST x(q) + CAR_FERT_COST x (q) + MES_FERT_COST x (q)
+  Fixed Costs = $20,000
+  One tomato bed takes 1 x 2.50 x 36 x 1.10 = 99 hours exactly.
+  Ten tomato beds take 10 x 2.50 x 36 x 1.10^10 = 2,334.37 hours.
+  The optimal mix is 10 tomato / 20 carrot / 30 mesclun, and season profit is $42,762 within $5
+  Standalone price-equals-marginal-cost crossings at 10, 10 and 6 beds, within one bed
+  Hire as many temporary workers, maximum of up to 4 temporary workers. 
 
 
 ## Conventions
@@ -67,14 +75,14 @@ For USD, round to the nearest ten cents.
 ## Validation rules
 Every calculated cell contains a formula.
 No error cells.
+Land on an integer under P = MC, or Price = Marginal Cost
 
 ## Outputs
 Name of crop, and how many beds of that crop.
-Total labor costs
+Total labor costs for Farmer
 Total Revenue
 Total Labor Costs for temp workers
-In perfect competition, Total Profit. Profit = Revenue - Total Costs. Total Costs = Fixed Costs + Labor Costs for Farmer + Labor Costs for Temp Workers + explicit Costs + additional costs
-Additional Costs = TOM_FERT_COST x(q) + CAR_FERT_COST x (q) + MES_FERT_COST x (q)
+In perfect competition, Total Profit.
 
 ## Audit findings
 
