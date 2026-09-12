@@ -19,7 +19,7 @@ This model will support the decision of how many crops to plant by type. This mo
 | `TOM_HRS`       | 2.5  | hours per week per 1 bed | Case scenario, crop table |
 | `TOM_FERT_COST` | $880  | USD per 1 bed | Case scenario, crop table |
 | `CAR_PRICE`     | $2094 | USD per 1 bed | Case scenario, crop table |
-| `CAR_HRS`       | 0.833| hours per week per 1 bed | Case scenario, crop table |
+| `CAR_HRS`       | 2.5/3| hours per week per 1 bed | Case scenario, crop table |
 | `CAR_FERT_COST` | 440  | USD per 1 bed | Case scenario, crop table |
 | `MES_PRICE`     | $2700 | USD per 1 bed | Case scenario, crop table |
 | `MES_HRS`       | 1.25 | hours per week per 1 bed | Case scenario, crop table |
@@ -43,7 +43,7 @@ Sheet 1: Inputs
 Sheet 2: Calculation: LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q
 Sheet 3: Optimization, number of beds (q) per crop is chosen. 64 is the max number beds allowed. Build one joint constrained optimization. The three crops are optimized jointly against the shared labor-hour and land constraints
 Sheet 4: Number of Temporary Workers that should be hired
-Sheet 4: Recommendation: how many Tomato, Carrot, and Mesclun beds should we have, and what is the total revenue, what is the total cost? 
+Sheet 5: Recommendation: how many Tomato, Carrot, and Mesclun beds should we have, and what is the total revenue, what is the total cost? 
 
 
 ## Calculation logic
@@ -51,7 +51,7 @@ Sheet 4: Recommendation: how many Tomato, Carrot, and Mesclun beds should we hav
   LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q
   q is the number of beds. If there is 1 bed, q=1. If there are 5 beds, q=5.
   LABOR_HRS = hours spent per bed per week by crop
-  Labor Costs for Farmer = $34.72 x Crop Hours worked per bed x Number of beds (q) 
+  Labor Costs for Farmer = $34.72 x 720 hours worked per bed x Number of beds (q) 
   Labor Costs for 1 Temp Worker = $17.36 x Crop Hours worked per bed x Number of beds (q)
   Q must be a whole number
   Revenue = Crop Price x Number of beds (q), where price is fixed regardless of how many beds are planted.
