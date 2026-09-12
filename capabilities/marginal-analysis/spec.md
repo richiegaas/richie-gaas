@@ -39,32 +39,21 @@ This model will support the decision of how many crops to plant by type. This mo
 
 
 ## Structure
-Sheet 1: Inputs
-Sheet 2: Calculation: LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q
-Sheet 3: Optimization, number of beds (q) per crop is chosen. 64 is the max number beds allowed. Build one joint constrained optimization. The three crops are optimized jointly against the shared labor-hour and land constraints
-Sheet 4: Number of Temporary Workers that should be hired
-Sheet 5: Recommendation: how many Tomato, Carrot, and Mesclun beds should we have, and what is the total revenue, what is the total cost? 
+Model: Inputs, Decision Variables, Per-Crop Labor Hours, Pooled Labor Billing, Roll-up, Validation Rules, Output, Notes from spec.md
+Standalone Diagnostics: Calculation: LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q formula for Tomatoes, Carrots, Mesclun
+Solver Model: Optimization, number of beds (q) per crop is chosen. 64 is the max number beds allowed. Build one joint constrained optimization. The three crops are optimized jointly against the shared labor-hour and land constraints.
 
 
 ## Calculation logic
 
   LABOR_HRS for (q) = q x HRS_PER_BED x 36 WEEKS x (1 + DIM_PCT)^q
-  q is the number of beds. If there is 1 bed, q=1. If there are 5 beds, q=5.
-  LABOR_HRS = hours spent per bed per week by crop
   Labor Costs for Farmer = $34.72 x 720 hours worked per bed x Number of beds (q) 
   Labor Costs for 1 Temp Worker = $17.36 x Crop Hours worked per bed x Number of beds (q)
-  Q must be a whole number
   Revenue = Crop Price x Number of beds (q), where price is fixed regardless of how many beds are planted.
-  Farmer work hours have a 720 hour cap, and any hours above that get billed to temp worker(s) at $17.36/hr.
   Profit = Revenue - Total Costs. 
   Total Costs = $20,000 in Fixed Costs + Labor Costs for Farmer + Labor Costs for Temp Workers + Fertilizer costs
   Fertilizer Costs = TOM_FERT_COST x(q) + CAR_FERT_COST x (q) + MES_FERT_COST x (q)
   Fixed Costs = $20,000
-  One tomato bed takes 1 x 2.50 x 36 x 1.10 = 99 hours exactly.
-  Ten tomato beds take 10 x 2.50 x 36 x 1.10^10 = 2,334.37 hours.
-  The optimal mix is 10 tomato / 20 carrot / 30 mesclun, and season profit is $42,762 within $5
-  Standalone price-equals-marginal-cost crossings at 10, 10 and 6 beds, within one bed
-  Hire as many temporary workers, maximum of up to 4 temporary workers. 
 
 
 ## Conventions
@@ -76,6 +65,15 @@ For USD, round to the nearest ten cents.
 Every calculated cell contains a formula.
 No error cells.
 Land on an integer under P = MC, or Price = Marginal Cost
+One tomato bed takes 1 x 2.50 x 36 x 1.10 = 99 hours exactly.
+Ten tomato beds take 10 x 2.50 x 36 x 1.10^10 = 2,334.37 hours.
+The optimal mix is 10 tomato / 20 carrot / 30 mesclun, and season profit is $42,762 within $5
+Standalone price-equals-marginal-cost crossings at 10, 10 and 6 beds, within one bed
+Hire as many temporary workers, maximum of up to 4 temporary workers. 
+q is the number of beds. If there is 1 bed, q=1. If there are 5 beds, q=5.
+LABOR_HRS = hours spent per bed per week by crop
+Q must be a whole number
+Farmer work hours have a 720 hour cap, and any hours above that get billed to temp worker(s) at $17.36/hr.
 
 ## Outputs
 Name of crop, and how many beds of that crop.
