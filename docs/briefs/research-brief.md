@@ -10,36 +10,26 @@ hypothesis: ""
 # Cost-exchange ratio — engagement brief
 
 ## Question
-One or two sentences. State this as an economics question the paper can
-actually answer — not "should the U.S. defend Guam," which is a strategic
-judgment, but something shaped like "at what cost, paid by whom, compared to
-what."
+Is the U.S. building Guam's missile defense on the expensive side of the cost-exchange? If so, where should the next defense dollar go instead: more interceptors, passive defenses, dispersal, directed energy, or left-of-launch?
 
 ## Who decides
-Name a real decision-maker who could act on this paper's recommendation, not
-a general audience. `spec.md` names defense-appropriations staffers as a
-candidate — confirm that or replace it, in your own words, and say why.
+The House and Senate defense appropriations subcommittees fund these programs line by line, advised by the Missile Defense Agency and INDOPACOM. Guam's non-voting delegate to Congress and the Government of Guam are the local advocates. The paper is written so a staffer on one of those committees could act on it.
 
 ## The challenge
-What it is, who it affects, and why it's a problem now rather than in
-general. Your own explanation of the mechanism, not a restatement of the
-spec's background section.
+Interceptors often cost several to many times more than the missiles they are fired at. A rational attacker keeps adding cheap missiles until the defender's marginal cost of stopping one exceeds its budget. The defender then either runs out of interceptors or out of money. Guam is where this bites first. It hosts Andersen Air Force Base and Naval Base Guam, the main U.S. forward bases west of Hawaii, and it sits within range of China's DF-26, a missile nicknamed the "Guam Express."
 
 ## Why now, not in general
-What specifically makes this timely at this moment — name events, dates, or
-decisions still in progress if relevant.
+• The Guam Defense System is being built largely from scratch, so its interceptor-versus-alternatives mix is still open. Planners have already cut the number of planned sites from 22 to 16 over environmental concerns (Breaking Defense).
+• The first ballistic-missile intercept test from Guam took place in December 2024, and the FY26 budget funds Guam's command network and the start of a "Guam defense architecture underlayer" (Defense News).
+• Analysts warn China could fire salvos an order of magnitude larger than Iran's April 2024 strike on Israel, while Middle East campaigns have already drawn down U.S. interceptor stocks.
 
 ## Working claim
-The prediction this paper will test, stated precisely enough that the
-evidence could contradict it. Not "defense spending matters" — something
-with a direction and a mechanism attached.
+Past some point, a dollar spent on interceptors buys less expected protection than a dollar spent on measures that raise the attacker's cost or lower the value of a hit. Congress should shift the margin, not the whole budget.
 
 ## Scope
-**In:**
+**In:** ballistic, cruise, and hypersonic missile defense of Guam's bases and civilian infrastructure; unclassified cost data; micro reasoning about marginal cost and incentives, plus one macro section. Dispersal includes nearby airfields in the Northern Mariana Islands (Tinian, Saipan), since Guam itself is small.
 
-**Out:**
+**Out:** whether the U.S. should be in the western Pacific; nuclear deterrence doctrine; classified performance data; Hawaii except as a comparison.
 
 ## How I would know I was wrong
-What finding, in the paper's own evidence, would contradict the working
-claim above? This is the section a reader returns to when the analysis is
-done, to check whether the prediction actually held.
+The paper succeeds if a defense-appropriations staffer can use it to compare the protection each option buys per dollar, and see which way to move the next dollar.
