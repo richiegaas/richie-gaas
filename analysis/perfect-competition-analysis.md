@@ -1,6 +1,6 @@
 
 
-# Perfect Competition Analsysis 
+# Perfect Competition Analysis 
 
 ### Analysis Placeholder
 
