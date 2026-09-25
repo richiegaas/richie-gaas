@@ -11,10 +11,15 @@ The hypothesis correctly identifies that labor complexity closes the revenue gap
 ![Tomato marginal cost vs. price, standalone](figures/tomato-mc-vs-price.png)
 *tomato-mc-vs-price.png — the bed 10/11 crossing and the bed 5→6 dip described above.*
 
-The hypothesis correctly predicts 20 carrot beds. The standalone chart shows carrot MC crossing above the $2,094.00 market price between beds 10 and 16, peaking at $2,551.80 before dropping at bed 17. Carrots are constrained strictly by their policy cap (20), generating a shadow price of $352.50 if relaxed to 21 beds.
+The hypothesis correctly predicts 20 carrot beds, but understanding why requires reconciling two seemingly conflicting charts. The standalone chart shows carrot MC crossing above the $2,094.00 market price between beds 10 and 16, peaking at $2,551.80 before dropping at bed 17. This standalone model assumes carrots receive a private allocation of cheap farmer hours.
 
 ![Carrot marginal cost vs. price, standalone](figures/carrot-mc-vs-price-standalone.png)
 *carrot-mc-vs-price-standalone.png — MC crosses price between bed 10 and 16, dips again at bed 17.*
+
+In the actual joint plan, higher-value tomatoes claim the cheap farmer hours first, so all carrot expansion is priced at the temporary worker rate ($17.36/hr) from bed 1 onward. Joint carrot MC remains constant at $1,688.80 at bed 20—comfortably below the $2,094.00 price across all beds. Carrots are constrained strictly by their policy cap (20), generating a shadow price of $352.50 if relaxed to 21 beds.
+
+![Carrot marginal cost vs. price, joint context](figures/carrot-mc-vs-price-joint.png)
+*carrot-mc-vs-price-joint.png — TOM=10 and MES=30 held at the optimum; MC stays well under price through bed 20.*
 
 The hypothesis correctly allocates 30 mesclun beds. A naive stopping rule would halt mesclun at 6 beds. However, between beds 13 and 15, pooled labor hours pass the 720-hour farmer threshold, causing MC to plummet to ~$1,980.00 at bed 15. From bed 15 through bed 30, MC stays well below market price. Mesclun expands to its policy cap (30), yielding a shadow price of $246.50 for the 31st bed.
 
