@@ -33,3 +33,12 @@
 
 ### Reflection
 _(mine to write — AI does not fill this in.)_
+
+## Engagement: cost-exchange-ratio (economic-research)
+
+| Date | Tool | What I asked | What I got | What I did with it |
+|---|---|---|---|---|
+| 2026-09-25 | Claude Code | Look at my Claude chat titled "Missile deterrence" and upload the deliverables into GitHub | Read the actual Claude Docs artifact (not the pasted summary) via the Claude Docs connector; found a combined Brief & Spec doc for a Guam missile-defense cost-exchange paper. Flagged that the earlier session's own transcript said the brief was "mostly my wording," which AGENTS.md rules out regardless of disclosure | Did not push the brief. Split the spec further on inspection: pushed the mechanical sections (framework, calculation, evidence plan, figure requirement, method rules, acceptance tests, starting sources) to `capabilities/economic-research/spec.md`; held back "The macro angle" and "The objection to answer," since both are worked argument, not a spec of what to build |
+
+### Reflection
+_(mine to write — AI does not fill this in.)_
