@@ -17,3 +17,15 @@
 | 2026-08-27 | Claude Code | Draft the .gitignore for an Excel-heavy repo | Standard Office and OS patterns | Read it, added ~$*.xlsm, committed |
 
 ## Errors caught
+
+## Engagement: perfect-competition (marginal-analysis)
+
+| Date | Tool | What I asked | What I got | What I did with it |
+|---|---|---|---|---|
+| 2026-09-03/04 | Claude Code | Build the marginal-analysis workbook from spec.md; resolve the diminishing-returns ambiguity the spec flagged | A Candidate-B workbook, then a full rebuild to pooled hourly labor billing once I supplied the revised spec | Committed to a branch, opened PR #4, merged to main |
+| 2026-09-11 | Claude Code | Check spec.md and the workbook against the PR #3 review; apply corrections | CAR_HRS fix (2.5/3 vs. the rounded 0.833), standalone MC=price crossings fixed to reproduce 10/10/6, spec.md rewritten | Committed directly to main; replied on and closed PR #3 |
+| 2026-09-24 | Claude Code | Apply the professor's second Stage 1.2 review and the Stage 0 portfolio review | FARMER_RATE/TEMP_RATE rounding fix, Calculation-logic rewrite, a four-check build audit (Q=1 hand check, pasted-value scan, two Solver starting points, independent cross-check), README/index/folder-README fixes | Committed to main; replied on and closed PRs #2 and #3 |
+| 2026-09-24 | Claude Code | Stage 2 prep: compute shadow prices for the binding caps, verify the tomato MC dip and the standalone/joint MC schedules, generate MC-vs-price figures from the workbook | Shadow prices ($352.50/carrot bed, $246.50/mesclun bed), confirmed BEDS_TOTAL and labor capacity are slack, three MC-vs-price charts (tomato; carrot standalone; carrot joint-context) exported to analysis/figures/ | Saved the figures and verified numbers for me to write the analysis and memo from; did not write either document — that stayed mine per the stage's AI boundary |
+
+### Reflection
+_(mine to write — AI does not fill this in.)_

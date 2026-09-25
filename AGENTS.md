@@ -41,6 +41,12 @@ Canonical file: AGENTS.md. CLAUDE.md points here.
 ## Documentation
 When work changes, update the document that describes it in the same commit.
 
+## Prompt log
+After any session where you helped with graded work, append an entry to
+prompt-log.md: the date, the tool, what I asked for, and what you
+produced. Facts only. Never write the reflection, never fill in what you
+got wrong, and never assess how I verified your output — those are mine.
+
 ## Scope
 Do the work I asked for. If you notice something worth doing that I did not ask
 for, tell me instead of doing it.
