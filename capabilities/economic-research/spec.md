@@ -2,135 +2,247 @@
 type: spec
 capability: economic-research
 engagement: cost-exchange-ratio
-date: 2026-09-30
+date: 2026-10-01
 status: draft            # draft | built | audited
 built_with: "Claude Code — mechanical sections only; see 'Not included here'"
 ---
 
 # Interceptor loadout allocation — research paper spec
 
-Guam Defense System procurement, analyzed as a budget-allocation problem:
-given a fixed procurement budget and a mix of threats (ballistic, cruise,
-air-breathing, UAS), which interceptor types should the next dollar buy?
-
-This supersedes the single-pairing cost-exchange framing of the prior
-version of this spec. The underlying cost-exchange ratio survives as the
-per-pairing metric the allocation is built on — it's now computed once per
-interceptor-type/threat-type combination rather than once overall.
+Guam Defense System procurement, modeled as a constrained optimization: given
+a fixed interceptor budget, annual production caps, and a mix of threats
+(ballistic, cruise, air-breathing, UAS), which quantities of which
+interceptor types maximize expected threats defeated? Built as an Excel and
+Solver model, structured like the marginal-analysis engagement.
 
 ## Success criterion
-The paper succeeds if a defense-appropriations staffer can use it to see
-which interceptor type the next procurement dollar should buy, and why —
-not just "more interceptors," but which type clears the highest
-protection-per-dollar bar given the threats it's priced against.
+The model succeeds if an appropriations staffer can see which interceptor
+mix buys the most protection per dollar, how that mix moves when the raid
+changes, and which assumptions the answer depends on.
 
-## Framework: the course tools and what each one does
-| Course tool | What it does in this paper |
+## Course concepts the model uses
+| Concept | Where it shows up |
 |---|---|
-| Equimarginal principle | Allocate the fixed procurement budget across interceptor types until the expected protection bought by the last dollar is equal across all of them |
-| Marginal cost / cost-exchange ratio | The common currency comparing every interceptor-type / threat-type pairing: the defender's cost to stop one more threat of that type, divided by the attacker's cost to send one |
-| Incentives / best response | A loadout that over-weights one threat type pushes a rational attacker toward whichever threat type is left thinnest-covered |
-| Elasticity of supply | Interceptor output responds slowly to price (years-long lead times), so the "next dollar" question has a real near-term ceiling per type |
-| Market structure | A few prime contractors and one buyer per interceptor line; cost-plus contracts weaken cost discipline |
+| Equimarginal principle | At the optimum, the last dollar on every interceptor type in use buys the same extra protection |
+| Diminishing marginal returns | Each added interceptor against a threat class defeats fewer additional threats than the last |
+| Opportunity cost and shadow prices | The budget constraint's shadow price is the protection one more dollar would buy; production caps have shadow prices too |
+| Incentives / best response | The attacker shifts its raid toward whatever the loadout covers worst, so scenarios replace a single forecast |
+| Elasticity of supply | Annual production caps are hard constraints: money can't buy interceptors the factories can't make |
 
-## Core calculation
-For each interceptor type `i` and each threat type `j` it can engage:
+## Inputs — interceptor contract
+Prices and system costs below are draft ranges from secondary sources, to
+be replaced with budget-book figures before building. The "Check before
+you build" notes flag what has to be resolved first.
+
+| Interceptor | Named prefix | Max per loadout | Threats engaged | Price/interceptor | Cost of rest of system (1 system) | Source | Status |
+|---|---|---|---|---|---|---|---|
+| PAC-3 (CRI) | `PAC3_` | 12 (note 1) | ABT, CM, RW, UAS, BM, ARM | $3–4M | $1.0–1.2B per Patriot battery, shared with PAC-3 MSE (note 3) | [Norsk Luftvern cost database](https://norskluftvern.com/2026/01/03/air-defense-systems-cost-database-acquisition-interceptor-and-lifecycle-costs/); battery: [Wikipedia, citing FY2022 cost](https://en.wikipedia.org/wiki/MIM-104_Patriot) | Draft |
+| PAC-3 MSE | `MSE_` | 64 (note 1) | BM, CM, ABT, ARM | $4–5.5M | Same Patriot battery as PAC-3 | Norsk Luftvern; Army missile procurement justification book (to pull) | Draft |
+| THAAD | `THAAD_` | 48 | BM | $12–15M | $1.5–2.0B per battery | Norsk Luftvern; MDA budget book (to pull) | Draft |
+| SM-3 (choose IB or IIA, note 6) | `SM3_` | 16 (note 2) | BM | IB $12–15M · IIA $28–36M | Aegis Guam system, shared with SM-2 and SM-6 (note 3) | Norsk Luftvern; MDA budget book (to pull) | Draft |
+| SM-2 | `SM2_` | Not given (note 2) | BM, ABT, UAS (note 5) | About $2M | Aegis Guam system (shared) | [CSIS, Feb 2024](https://www.csis.org/analysis/cost-and-value-air-and-missile-defense-intercepts) | Draft |
+| SM-6 | `SM6_` | 8 (note 2) | BM, CM, UAS (note 5) | $4.3M (FY2021 average) | Aegis Guam system (shared) | [Wikipedia, RIM-174](https://en.wikipedia.org/wiki/RIM-174_Standard_ERAM); Navy budget book (to pull) | Draft |
+
+Each row becomes named inputs in the workbook: `<PREFIX>PRICE`,
+`<PREFIX>MAXLOAD`, `<PREFIX>SYS_COST`, and one engagement flag per threat
+class (for example `SM6_ENGAGES_CM` = TRUE).
+
+**Threat codes:** BM = ballistic missile · CM = cruise missile · ABT =
+air-breathing threat (aircraft) · RW = rotary wing (helicopter) · UAS =
+drone · ARM = anti-radiation missile.
+
+### Check before you build
+1. **One unit for "loadout."** The rows mix launchers and batteries. A
+   Patriot M903 launcher holds 16 PAC-3 CRI or 12 PAC-3 MSE, and a battery
+   nominally has six launchers ([Wikipedia](https://en.wikipedia.org/wiki/MIM-104_Patriot)).
+   THAAD's 48 matches a six-launcher battery of 8 each. The draft 12 for
+   PAC-3 looks like the MSE-per-launcher figure, and 64 for MSE doesn't
+   match either unit. Pick one unit (per battery or per site) and restate
+   every row in it.
+2. **SM-2, SM-3, and SM-6 share launcher cells.** In Aegis Guam they all
+   load into the same Mk 41 cells, so separate maximums (16, 8, blank) are
+   the wrong constraint. Replace them with one shared constraint,
+   `SM2_Q + SM3_Q + SM6_Q <= MK41_CELLS`, using the Aegis Guam cell count
+   (to source). PAC-3 CRI and MSE share Patriot launchers the same way.
+3. **System cost is a fixed cost, counted once.** The first THAAD
+   interceptor bought requires a whole battery; the second doesn't. The
+   model needs a yes/no "build this system" decision with its fixed cost,
+   and the shared Aegis Guam and Patriot costs must be counted once, not
+   per interceptor type. This is the fixed-vs-marginal-cost distinction:
+   price per interceptor is the marginal cost only after the system
+   exists. Reported Aegis Guam figures run to about $1.9B
+   ([Army Recognition, 2026](https://www.armyrecognition.com/news/army-news/2026/us-spends-1-9-billion-on-aegis-guam-missile-defense-system-to-stop-chinas-hypersonic-attacks));
+   verify against MDA's books.
+4. **Confirm each system is planned for Guam.** GAO confirms SM-3 and SM-6
+   in the Guam Defense System
+   ([GAO-25-108187](https://www.gao.gov/assets/gao-25-108187.pdf)). THAAD
+   has been deployed on Guam since 2013. SM-2 and Patriot weren't
+   confirmed in the sources checked so far — confirm both or label them as
+   options the paper is testing.
+5. **Threat lists.** SM-2 is mainly an aircraft and cruise-missile
+   interceptor, with only limited terminal ballistic capability in older
+   variants — check whether BM belongs in its row. SM-6's threat list had
+   CM listed twice; it also engages aircraft (ABT) and, in its newest
+   variant, hypersonic weapons in the terminal phase
+   ([Wikipedia](https://en.wikipedia.org/wiki/RIM-174_Standard_ERAM)).
+6. **Missing pieces.** Choose SM-3 IB or IIA — the price roughly doubles.
+   Consider adding a hypersonic (HGV) threat column, since that's the
+   threat Guam's system is most often justified against. The drone (UAS)
+   layer has no low-cost interceptor yet in this table, so every drone
+   would be shot down with a $2–5M missile — that gap is itself a finding
+   worth keeping, not fixing.
+
+## The model
+**Decision variables.** `Q_ij` = number of interceptors of type `i`
+assigned to threat class `j` (zero wherever the table above says the type
+can't engage that class). Total bought of type `i`: `Q_i = sum_j Q_ij`.
+
+**Threats defeated in each class**, which gives diminishing returns
+automatically as the defense nears saturation:
 
 ```
-C_kill(i,j) = (n_ij x C_interceptor(i)) / P_k(i,j)
-R(i,j)      = C_kill(i,j) / C_threat(j)
+D_j = R_j * (1 - exp(-sum_i(P_ij * Q_ij) / R_j))
 ```
 
-`n_ij` is interceptors of type `i` fired per threat of type `j` (often more
-than one), `C_interceptor(i)` is that type's unit cost, and `P_k(i,j)` is
-the probability that engagement kills the target. `R(i,j)` is the
-cost-exchange ratio for that pairing — the same metric as a single
-interceptor-vs-threat comparison, computed once per pairing instead of once
-overall.
+`R_j` is the number of incoming threats of class `j` in the raid, and
+`P_ij` is the single-shot kill probability of type `i` against class `j`.
 
-The loadout question: given a total procurement budget `B`, choose
-quantities `q_i` of each interceptor type to maximize expected threats
-averted (weighted by the threat mix Guam actually faces), subject to
-`sum(q_i x C_interceptor(i)) <= B`. At an optimal loadout, the expected
-protection bought by the next unit of every interceptor type in the mix is
-equal — the equimarginal condition. If one type's marginal
-protection-per-dollar is higher than another's, the budget should shift
-toward it.
+**Objective.** Maximize the weighted threats defeated, where `W_j` is the
+damage a leaked threat of class `j` would do:
 
-## Evidence plan
-1. **Interceptor unit costs:** SM-3 IB and IIA, SM-6, THAAD, GBI, PAC-3 MSE.
-   Sources: DoD budget justification books (MDA, Navy), CRS, CBO.
-2. **Threat mix:** relative frequency/likelihood of ballistic, cruise,
-   air-breathing, and UAS threats against Guam specifically. New to this
-   framing, and likely the hardest number to source openly.
-3. **Kill-probability estimates per pairing (`P_k(i,j)`):** which
-   interceptor types are rated against which threat categories, and at
-   what confidence. Flag every value as an estimate; state plainly where
-   no open-source estimate exists.
-4. **Threat missile cost estimates:** by category. Sources: CSIS Missile
-   Threat, published analyst estimates, each labeled as an estimate.
-5. **Budget figures:** total Guam Defense System procurement allocation by
-   year, from MDA/Navy budget justification books.
+```
+max sum_j(W_j * D_j)
+```
 
-## Required figure
-A chart showing expected protection-per-dollar for each interceptor type
-against its primary threat category. This is what makes the equimarginal
-comparison visible: it should show at a glance whether the current loadout
-is already roughly equalized at the margin, or tilted toward one type. A
-grouped bar chart is the direct option; a scatter of cost-exchange ratio by
-pairing is the fallback if protection-per-dollar proves too data-hungry to
-support with open sources.
+**Constraints.**
+- Budget: `sum_i(C_i * Q_i) <= B`
+- Production: `Q_i <= CAP_i` (annual rate x years to FY2032)
+- Minimum coverage: `D_j >= FLOOR_j * R_j` for every class, so no threat
+  class is abandoned
+- `Q_ij` are whole numbers, >= 0
 
-A second figure is optional: current vs. recommended loadout quantities by
-interceptor type.
+**Equimarginal check.** At the optimum, for every type in use, extra
+protection per dollar equals the budget's shadow price `lambda`. Use this
+to audit the Solver result by hand:
+
+```
+(W_j * P_ij * exp(-sum_k(P_kj * Q_kj) / R_j)) / C_i = lambda
+```
+
+## Inputs — the named contract
+| Name | Meaning | Source | Status |
+|---|---|---|---|
+| `C_i` | Unit cost per interceptor, constant dollars | MDA, Navy, and Army budget books; CBO; CRS | To source |
+| `CAP_i` | Interceptors producible through FY2032 | Budget books; production-order reporting | To source |
+| `B` | Interceptor share of the Guam Defense System budget | MDA budget books; the roughly $8B program total | To source |
+| `P_ij` | Single-shot kill probability | Published ranges only; classified values out of scope | Labeled assumption |
+| `R_j` | Threats per class in each raid scenario | CSIS Missile Threat; analyst estimates | Labeled assumption |
+| `W_j` | Relative damage of a leaked threat | Stated judgment, varied in sensitivity runs | Labeled assumption |
+| `FLOOR_j` | Minimum share of each class defeated | Stated policy choice | Labeled assumption |
+
+## Raid scenarios
+Hold the attacker's spending constant and change only how it is split, so
+cheaper threats show up as larger raids:
+1. **A, ballistic-heavy:** mostly medium- and intermediate-range ballistic missiles.
+2. **B, cruise and air-breathing-heavy:** mostly cruise missiles and aircraft.
+3. **C, drone saturation:** mostly cheap one-way attack drones.
+
+Solve each scenario separately. Then find the **robust mix**: the single
+loadout with the best worst-case result across all three (maximin). Report
+the regret — how much protection the robust mix gives up compared with
+each scenario's own optimum.
+
+## Figures
+1. **Required — optimal loadout by scenario.** A stacked bar chart of
+   budget share by interceptor type for scenarios A, B, and C plus the
+   robust mix. Shows directly whether the recommended mix depends on the
+   raid.
+2. **Recommended — marginal protection per dollar.** One curve per
+   interceptor type against dollars spent, with the shadow-price line
+   `lambda` where they meet. Makes the equimarginal principle visible.
+3. **Optional — sensitivity.** A tornado chart showing how much the robust
+   mix shifts when each `P_ij` and `W_j` moves across its range.
 
 Figures go in `analysis/figures/`.
 
 ## Method rules
-- Every cost and probability figure carries its source, year, and whether
-  it's a government estimate, an analyst estimate, or assumed. Convert all
-  costs to constant dollars in one base year.
-- Where kill-probability or threat-mix data doesn't exist in open sources,
-  say so explicitly rather than inventing a number — this is this
-  framing's main data risk, flagged going in.
-- Where estimates disagree, report the range and run the conclusion at
-  both ends.
+- Every dollar figure is in constant dollars for one stated base year,
+  with source, year, and unit or procurement basis.
+- Every assumption is labeled as one, with the range used in sensitivity runs.
+- Cost figures for Guam-based systems should include the shipping and
+  labor premium specific to the location (freight, Jones Act exposure if
+  applicable, H-2B-dependent construction labor) rather than reusing
+  mainland figures — verify each.
+- State plainly that the model is stylized: it shows the decision rule and
+  its sensitivities, not a claim to the true classified optimum.
+- Build audit, as in the marginal-analysis engagement: a hand check of one
+  cell, two Solver starting points, and the equimarginal check above.
+- Every AI-suggested number is logged in `prompt-log.md` with the source
+  that confirmed or replaced it.
 
-## AI log
-Keep a dated table in `prompt-log.md`: prompt, what AI returned, what was
-checked, what was kept or changed. Log every number AI suggested and the
-primary source used to confirm or replace it.
-
-## Acceptance tests
+## Success criteria
 Check before submitting:
-- [ ] Does the reader know which interceptor type the next dollar should
-      buy, and why?
-- [ ] Could the figure stand alone with its caption, and does the text use it?
-- [ ] Is the recommendation still defensible if the least-certain
-      kill-probability estimates are wrong in the unfavorable direction?
-- [ ] Is the strongest objection — that threat mix and true `P_k` values
-      can't be fully known — stated fairly and answered?
-- [ ] Is every number traceable to a primary or government source, or
-      explicitly labeled an estimate?
+- [ ] Identifies and explains the challenge: what it is, who it affects, why now.
+- [ ] Links it to the course's economics, micro and macro.
+- [ ] Analyzes implications: the mix now, and how it changes under scenarios A, B, and C.
+- [ ] Recommends a loadout or a decision rule, names who decides, and defends it against the objection.
+- [ ] Figure 1 stands alone with its caption, and the text uses it.
+- [ ] The recommendation survives the sensitivity runs, or the paper says exactly where it breaks.
+- [ ] Every number is traceable to a primary or government source, or labeled as an assumption.
+
+## Macro channels the model should surface
+Three channels explain where the model's constraints come from and why
+they tighten over time. Place this section after the scenario results and
+before the recommendation, at about 600-700 words.
+
+| Channel | Course concepts | Evidence to gather |
+|---|---|---|
+| Fiscal policy and opportunity cost | Government budget constraint, deficit financing, crowding out (loanable funds), opportunity cost | CBO budget outlook: defense vs. net interest outlays over time; CBO or CRS cost estimates for Golden Dome and missile defense |
+| Inelastic supply and defense inflation | Price elasticity of supply, short run vs. long run, demand shocks, sector-specific (cost-push) inflation | Unit-cost trends across several years of MDA and Navy budget books; annual production rates vs. recent expenditure |
+| Trade and input dependence | Supply shocks, terms of trade, comparative advantage, gains from trade vs. security externalities | USGS mineral commodity summaries (import reliance); China's export-control announcements; U.S.-Japan co-production agreements |
+
+**How each channel enters the model:**
+
+| Channel | Model element | What to show |
+|---|---|---|
+| Fiscal policy and opportunity cost | The budget `B` and its shadow price `lambda` | What one more dollar for Guam buys, and what that dollar is taken from elsewhere |
+| Inelastic supply and defense inflation | Production caps `CAP_i` and rising unit costs `C_i` | Which caps bind, and how the optimal mix shifts when the scarcest interceptor gets more expensive |
+| Trade and input dependence | A supply-shock scenario on `C_i` and `CAP_i` | Rerun the robust mix with critical-mineral export controls raising costs or cutting output for the most exposed interceptors |
 
 ## Starting sources
-Unit-cost and budget leads carry over unchanged from the prior framing.
-New to this version: threat-mix and kill-probability sourcing, which
-doesn't yet have a confirmed lead.
+Leads for building the evidence. None has been checked against this spec
+yet, and no figures are drawn from them here. Confirm every number against
+a primary or government source and log it.
 
-- [Breaking Defense — first ballistic intercept test from Guam](https://breakingdefense.com/2024/12/guam-missile-defenses-conduct-first-ever-ballistic-intercept/) — the system's parts (AN/TPY-6 radar, vertical launchers), the site cut from 22 to 16, and the salvo-size warning
-- [Defense News — MDA's FY26 budget](https://www.defensenews.com/pentagon/2025/06/30/missile-defense-agencys-fy26-budget-targets-homeland-missile-defense/) — Guam command network and underlayer funding, plus Golden Dome
+- [GAO-25-108187 — DOD Faces Support Challenges for Defense of Guam (May 2025)](https://www.gao.gov/assets/gao-25-108187.pdf) — components by service, the FY2027–FY2032 timeline, AN/TPY-6 halt
+- [Arms Control Association — Guam missile defense system receives go-ahead (Oct 2025)](https://www.armscontrol.org/act/2025-10/news-briefs/guam-missile-defense-system-receives-go-ahead) — roughly $8B, 16 sites, SM-3 and SM-6 in Mk 41 launchers, local housing and healthcare impacts
+- [Breaking Defense — first ballistic intercept test from Guam](https://breakingdefense.com/2024/12/guam-missile-defenses-conduct-first-ever-ballistic-intercept/) — the site cut from 22 to 16, salvo-size warning
+- [Defense News — MDA's FY26 budget](https://www.defensenews.com/pentagon/2025/06/30/missile-defense-agencys-fy26-budget-targets-homeland-missile-defense/) — Guam command network and underlayer funding
 - [DoD FY2026 MDA military construction justification](https://comptroller.war.gov/Portals/45/Documents/defbudget/FY2026/budget_justification/pdfs/07_Military_Construction/10-Missile_Defense_Agency.pdf) and [FY2027 version](https://comptroller.war.gov/Portals/45/Documents/defbudget/FY2027/budget_justification/pdfs/07_Military_Construction/8-Missile_Defense_Agency.pdf) — primary source for Guam construction costs
-- [CBO — Potential Costs of a National Missile Defense System](https://www.cbo.gov/publication/62422) — cost framing and interceptor cost ranges
-- [Baird Maritime — pros and cons of "Fortress Guam"](https://www.bairdmaritime.com/security/weaponry/feature-weighing-the-pros-and-cons-of-fortress-guam-in-light-of-us-anti-ballistic-missile-tests) — an opposing view to use for the objection
-- [The Defense Post — SM-3 Block IB production order (2026)](https://thedefensepost.com/2026/03/17/sm-3-block-ib/) — production and cost reporting
-- Still to find: per-type kill-probability ratings against each threat
-  category (likely the hardest to source openly), Guam-specific threat-mix
-  estimates, MDA/Navy budget justification books, CSIS Missile Threat page
-  on the DF-26.
+- [CBO — Potential Costs of a National Missile Defense System](https://www.cbo.gov/publication/62422) — interceptor cost framing
+- [Army Recognition — prototype systems sent to Guam (2025)](https://www.armyrecognition.com/archives/archives-aerospace-defense/defense-news-aerospace-2025/u-s-sends-prototype-missile-defense-systems-to-guam-as-new-360-degree-shield-takes-shape) — lead for the Army layers; confirm against Army budget books
+- Still to find: MDA, Navy, and Army procurement justification books for
+  unit costs and production quantities (SM-3 IIA, SM-6, PAC-3 MSE, IFPC);
+  CSIS Missile Threat pages for raid scenarios; published kill-probability
+  ranges; USGS mineral commodity summaries; Guam Bureau of Statistics and
+  Plans data.
 
 ## Not included here
-Same discipline as the prior version of this spec: no worked argument. The
-equimarginal setup above defines the *method*, not a conclusion — whether
-the current loadout is actually unbalanced, and which way to shift it, is
-the analysis, and it isn't written here.
+Two things from the source planning document are argument, not a spec of
+what to build, and stay out of this file on the same principle as before:
+
+- **"The objection to answer"** — a worked rebuttal to "optimizing on
+  unclassified guesses is meaningless." That defense is the paper's to
+  make.
+- **"Why this strengthens the recommendation"** (from the macro section)
+  — a conclusion about what the recommendation has to pair with if
+  production/input constraints bind rather than money. That's an
+  analytical claim, not a model requirement.
+
+Two build instructions that were bundled with that argument *are* included
+above, stripped of their framing: the Guam-specific cost-premium note (now
+under Method rules) and the "state the model is stylized" reminder (also
+Method rules) — both are things the model needs to do, not conclusions
+about what the paper should find.
+
+`docs/briefs/research-brief.md` is not touched by this update.

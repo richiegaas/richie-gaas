@@ -1,1 +1,1 @@
-Interceptor loadout allocation research spec for Guam missile defense — `spec.md` defines the equimarginal framework, data plan, and required figure; the brief and paper are still to come.
+Interceptor loadout allocation research spec for Guam missile defense — `spec.md` defines the constrained-optimization model, interceptor input table, raid scenarios, and required figures; the brief and paper are still to come.
