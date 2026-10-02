@@ -1,1 +1,1 @@
-Interceptor loadout allocation research spec for Guam missile defense — `spec.md` defines the constrained-optimization model, interceptor input table, raid scenarios, and required figures; the brief and paper are still to come.
+Interceptor loadout allocation research for Guam missile defense — `spec.md` defines the constrained-optimization model, interceptor input table, raid scenarios, and required figures; `model.xlsx` is the Excel and Solver build, with every input still a labeled draft placeholder until sourced. The brief and paper are still to come.
