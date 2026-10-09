@@ -14,6 +14,9 @@ Canonical file: AGENTS.md. CLAUDE.md points here.
 - docs/decisions/       written AFTER work: recommendations
 - analysis/             findings and figures
 - data/                 sourced inputs, with provenance
+- drafts/               dated draft chain of the research paper, one file per
+  draft: drafts/YYYY-MM-DD-draft.md (e.g. drafts/2026-10-08-draft.md).
+  Substitute the real date — never commit the literal "YYYY-MM-DD".
 
 ## Naming
 - The directory matters most. A file in the wrong folder may not be found
