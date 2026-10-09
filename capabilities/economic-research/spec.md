@@ -120,6 +120,7 @@ max sum_j(W_j * D_j)
 - Minimum coverage: `D_j >= FLOOR_j * R_j` for every class, so no threat
   class is abandoned
 - `Q_ij` are whole numbers, >= 0
+- Site coverage: Patriot batteries are limited in number and in the sites they protect; see **Site constraints** below
 
 **Equimarginal check.** At the optimum, for every type in use, extra
 protection per dollar equals the budget's shadow price `lambda`. Use this
@@ -128,6 +129,47 @@ to audit the Solver result by hand:
 ```
 (W_j * P_ij * exp(-sum_k(P_kj * Q_kj) / R_j)) / C_i = lambda
 ```
+
+## Site constraints
+Added 2026-10-08. The defense is spread over 16 sites, and the three
+systems do not reach them the same way. The sites and the Patriot limits are
+user-specified; the even spread of threats over sites is a placeholder.
+
+| Rule | Value |
+|---|---|
+| Sites to defend (`SITES`) | 16 |
+| Aegis and THAAD (`AEGIS_SITES`, `THAAD_SITES`) | Their interceptors can defend all 16 sites, but only the threat classes their `P_ij` row allows |
+| Sites one Patriot battery protects (`SITES_PER_PATRIOT`) | At most 2 |
+| Patriot batteries on Guam (`PATRIOT_MAX`) | At most 4, so Patriot covers at most 8 of 16 sites |
+| Where Patriot interceptors defend | Only the sites their batteries cover |
+
+**Decision variables.** `b` (`PATRIOT_BATTERIES`) = number of Patriot
+batteries, a whole number from 0 to `PATRIOT_MAX`. The interceptor grid
+splits in two: `QC_ij` = interceptors of type `i` at Patriot-covered sites
+against class `j`, and `QU_ij` = interceptors at sites without Patriot cover.
+`Q_ij = QC_ij + QU_ij`. Patriot interceptors can only appear in `QC`.
+
+**Threats defeated.** The covered share of sites is `f = min(SITES,
+SITES_PER_PATRIOT x b) / SITES`, and raid threats are assumed spread evenly
+across sites, so a share `f` of every class arrives at covered sites:
+
+```
+D_j = Dc_j + Du_j
+Dc_j = f R_j (1 - exp(-sum_i(P_ij * QC_ij) / (f R_j)))
+Du_j = (1 - f) R_j (1 - exp(-sum_i(P_ij * QU_ij) / ((1 - f) R_j)))
+```
+
+**Constraints added.**
+- `b` is a whole number, `0 <= b <= PATRIOT_MAX`
+- `QU_ij = 0` for the Patriot types; `QC_ij = 0` for every type when `b = 0`
+- Patriot launchers across all batteries: `QC_CRI/16 + QC_MSE/12 <= PATRIOT_LAUNCHERS x b`
+- The budget pays `SYS_COST_PATRIOT` once per battery
+
+**Workbook.** `model.xlsx` carries these rules in the site-constraint
+blocks below the hand checks (rows 98 to 141), the `QC` decision grid, the
+five rules in rows 130 to 134 (rolled into `ALL_VALID`), and four site hand
+checks. The Scenarios sheet's reference results are recomputed with the site
+constraints.
 
 ## Inputs — the named contract
 | Name | Meaning | Source | Status |
@@ -139,6 +181,9 @@ to audit the Solver result by hand:
 | `R_j` | Threats per class in each raid scenario | CSIS Missile Threat; analyst estimates | Labeled assumption |
 | `W_j` | Relative damage of a leaked threat | Stated judgment, varied in sensitivity runs | Labeled assumption |
 | `FLOOR_j` | Minimum share of each class defeated | Stated policy choice | Labeled assumption |
+| `SITES` | Number of sites to defend | Arms Control Association (Oct 2025) lead lists 16 sites; not yet verified; confirmed by the user | To source |
+| `SITES_PER_PATRIOT`, `PATRIOT_MAX` | Sites one Patriot battery protects (2) and the Guam limit on batteries (4) | User-specified | To source |
+| `AEGIS_SITES`, `THAAD_SITES` | Sites Aegis and THAAD can defend (all 16) | User-specified | To source |
 
 ## Raid scenarios
 Hold the attacker's spending constant and change only how it is split, so
