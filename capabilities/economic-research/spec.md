@@ -132,7 +132,7 @@ to audit the Solver result by hand:
 
 ## Site constraints
 Added 2026-10-08. The defense is spread over 16 sites, and the three
-systems do not reach them the same way. The sites and the Patriot limits are
+systems do not reach them the same way. The sites and the Patriot numbers are
 user-specified; the even spread of threats over sites is a placeholder.
 
 | Rule | Value |
@@ -140,7 +140,7 @@ user-specified; the even spread of threats over sites is a placeholder.
 | Sites to defend (`SITES`) | 16 |
 | Aegis and THAAD (`AEGIS_SITES`, `THAAD_SITES`) | Their interceptors can defend all 16 sites, but only the threat classes their `P_ij` row allows |
 | Sites one Patriot battery protects (`SITES_PER_PATRIOT`) | At most 2 |
-| Patriot batteries on Guam (`PATRIOT_MAX`) | At most 4, so Patriot covers at most 8 of 16 sites |
+| Patriot batteries on Guam (`PATRIOT_MAX`) | 8 (the limit; the model may build fewer), so Patriot can cover all 16 sites |
 | Where Patriot interceptors defend | Only the sites their batteries cover |
 
 **Decision variables.** `b` (`PATRIOT_BATTERIES`) = number of Patriot
@@ -182,7 +182,7 @@ constraints.
 | `W_j` | Relative damage of a leaked threat | Stated judgment, varied in sensitivity runs | Labeled assumption |
 | `FLOOR_j` | Minimum share of each class defeated | Stated policy choice | Labeled assumption |
 | `SITES` | Number of sites to defend | Arms Control Association (Oct 2025) lead lists 16 sites; not yet verified; confirmed by the user | To source |
-| `SITES_PER_PATRIOT`, `PATRIOT_MAX` | Sites one Patriot battery protects (2) and the Guam limit on batteries (4) | User-specified | To source |
+| `SITES_PER_PATRIOT`, `PATRIOT_MAX` | Sites one Patriot battery protects (2) and the number of batteries on Guam (8, treated as the limit) | User-specified | To source |
 | `AEGIS_SITES`, `THAAD_SITES` | Sites Aegis and THAAD can defend (all 16) | User-specified | To source |
 
 ## Raid scenarios
