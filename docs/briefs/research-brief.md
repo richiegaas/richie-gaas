@@ -9,16 +9,6 @@ hypothesis: ""
 
 # Cost-exchange ratio — engagement brief
 
-> **Amendment (2026-10-10).** The paper (`drafts/2026-10-10-draft.md`, "The Global Costs of Patriot
-
-> Missile Deterrence in Guam") asks which mix to buy first, then when to buy it. The Question below
-
-> is the first part. The timing question, the Working hypothesis (written before the Patriot
-
-> recommendation) and "How I'd know I was wrong" are for the author to restate in their own words;
-
-> `spec.md` and `model.xlsx` are the loadout model behind the first part.
-
 ### Question. 
 Given the roughly $8 billion Guam Defense System budget, which interceptor mix gives Guam the most protection per dollar, and when should Congress buy it so Guam’s demand doesn’t crowd out allies who depend on the same production line?
 
