@@ -17,11 +17,10 @@ Solver model, structured like the marginal-analysis engagement.
 
 ## Status note (2026-10-10)
 The research paper (`drafts/2026-10-10-draft.md`, titled "The Global Costs of Patriot Missile
-Deterrence in Guam") no longer asks which interceptor mix to buy. Its Recommendation is about
-when to buy Guam's PAC-3 MSE interceptors, given a fixed supply and the cost to allies.
-This spec and `model.xlsx` are kept as the loadout model; the paper does not report their
-results. The paper's question is the author's to restate in `docs/briefs/research-brief.md`
-in their own words.
+Deterrence in Guam") asks which mix of interceptors to buy first, then when to buy it. This
+spec and `model.xlsx` cover the first part: the loadout model, its three options and Table 2 of
+the paper. The timing question (the paper's Recommendation) is not modeled here. The brief's
+question is the author's to restate in `docs/briefs/research-brief.md` in their own words.
 
 ## Success criterion
 The model succeeds if an appropriations staffer can see which interceptor
@@ -115,6 +114,13 @@ D_j = R_j * (1 - exp(-sum_i(P_ij * Q_ij) / R_j))
 `R_j` is the number of incoming threats of class `j` in the raid, and
 `P_ij` is the single-shot kill probability of type `i` against class `j`.
 
+**Kill probability and the salvo form.** `P_ij` is a single-shot probability, so `n` interceptors
+fired at one threat kill it with probability `1 - (1 - P_ij)^n`. The workbook gets exactly this
+from the same `D_j` formula by replacing `P_ij` with the kill rate `K_ij = -ln(1 - P_ij)`: one
+interceptor adds `K_ij` effective shots (named `KRATE`, Model rows 147 to 150), so
+`D_j = R_j * (1 - exp(-sum_i(K_ij * Q_ij) / R_j))`. With `P_ij` = 50%, one interceptor per threat
+defeats half of them and two defeat three quarters.
+
 **Objective.** Maximize the weighted threats defeated, where `W_j` is the
 damage a leaked threat of class `j` would do:
 
@@ -174,10 +180,36 @@ Du_j = (1 - f) R_j (1 - exp(-sum_i(P_ij * QU_ij) / ((1 - f) R_j)))
 - The budget pays `SYS_COST_PATRIOT` once per battery
 
 **Workbook.** `model.xlsx` carries these rules in the site-constraint
-blocks below the hand checks (rows 98 to 141), the `QC` decision grid, the
+blocks below the hand checks (rows 98 to 143), the `QC` decision grid, the
 five rules in rows 130 to 134 (rolled into `ALL_VALID`), and four site hand
 checks. The Scenarios sheet's reference results are recomputed with the site
 constraints.
+
+## Options and Table 2
+Added 2026-10-10. `model.xlsx` runs the three options in the paper's Table 2 through one selector,
+`OPTION` (Model!B154), and `ACTIVE_RAID`, at `BUDGET` = 8,000 ($M):
+
+| `OPTION` | Name in Table 2 | What the model may buy |
+|---|---|---|
+| 1 | 8 Patriot batteries with 576 MSE only | PAC-3 MSE on all `PATRIOT_MAX` = 8 batteries, fully loaded; no Aegis, no THAAD interceptors |
+| 2 | Current Guam plan | Aegis system (SM-3 IIA, SM-6) and the existing, already-paid THAAD battery; no Patriot, no SM-2 |
+| 3 | Optimal mix, up to 8 Patriot batteries | Every interceptor type |
+
+A 0/1 matrix `ALLOWED` and the row `ALLOWED_NOW` turn the production cap into `CAP x ALLOWED_NOW`;
+`PATRIOT_MIN`, `PATRIOT_MAX_NOW`, `AEGIS_ALLOWED` and `MSE_FULL_SLACK` carry the option rules, which
+are checked by four validation rules (Model rows 171 to 174) and rolled into `ALL_VALID`.
+
+**Inputs.** Prices, the Patriot battery ($0.4B), Aegis Guam ($1.9B) and the threat lists are Table 1
+of the paper (2026-10-09); midpoints are used for the SM-2 and SM-6 ranges. Kill probability is 50%
+wherever Table 1 lists the threat for that interceptor. These inputs are not yet confirmed against
+budget books or contract awards. Production caps are set non-binding (2,000 per type).
+
+**Provenance of Table 2.** The `Table 2` sheet lists each of the nine cells next to the workbook's
+reference value and checks that they match, with the steps to reproduce each one in Excel. The
+reference values come from `capabilities/economic-research/reference-optimizer.py`, an independent
+integer program; Excel formulas reproduce each of the nine reference solutions exactly (checked in
+Excel on 2026-10-10). Excel Solver itself has not been run. The same sheet holds the
+bang-for-the-buck table: best protection at budgets from $2B to $8B.
 
 ## Inputs — the named contract
 | Name | Meaning | Source | Status |
