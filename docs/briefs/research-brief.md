@@ -20,7 +20,7 @@ hypothesis: ""
 > `spec.md` and `model.xlsx` are the loadout model behind the first part.
 
 ### Question. 
-Given the Guam Defense System's budget and interceptor production limits, what mix of interceptors defeats the most expected threats per taxpayer dollar across ballistic, cruise, air-breathing, and drone (UAS) attacks? And how should that mix change if China shifts the composition of its raids?
+Given the roughly $8 billion Guam Defense System budget, which interceptor mix gives Guam the most protection per dollar, and when should Congress buy it so Guam’s demand doesn’t crowd out allies who depend on the same production line?
 
 ### Who decides. 
 The House and Senate defense appropriations subcommittees fund these programs line by line, advised by the Missile Defense Agency and INDOPACOM. Guam's non-voting delegate to Congress and the Government of Guam are the local advocates. The paper is written so a staffer on one of those committees could act on it.
@@ -36,10 +36,17 @@ Guam's new missile defense is a roughly $8 billion system spread across 16 sites
 • The threat mix is shifting toward cheap cruise missiles and drones, which make expensive interceptors a poor trade. Analysts warn China could fire salvos an order of magnitude larger than Iran's April 2024 strike on Israel.
 
 ### Working hypothesis:  
-The budget-optimal loadout puts a smaller share of dollars into high-end ballistic interceptors than a threat-severity ranking would suggest, and more into cheaper layers against cruise missiles and drones. That's because the extra protection each dollar buys falls fastest for the most expensive interceptors. The recommended mix should be the one that holds up across raid scenarios, not the best one for a single guess.
+Mix: about 8 Patriot batteries with 576 PAC-3 MSE interceptors, about $5.6B, gives most of the optimal mix’s protection at lower cost.
+Timing: buying most of those interceptors in FY2029–FY2032, as Lockheed’s capacity grows toward 2,000 a year, protects Guam without starving Taiwan, Ukraine or the Middle East.
 
 ### How I'd know I was wrong.
-• The optimal mix keeps a high SM-3 share in every raid scenario, which would mean ballistic threats dominate regardless of cost.
+• Mix half:
+With sourced kill probabilities, the Patriot-only option falls far below the optimal mix, more than a gap you set in advance.
+Patriot’s real drone capability is negligible, and drones dominate the threat, so the 49% drone-raid score becomes the deciding number.
+Timing half:
+Lockheed’s production ramp slips, so a FY2029–FY2032 buy would still compete with allies.
+Allied deliveries and unit prices turn out not to respond to U.S. demand, which would mean crowding out isn’t happening.
+Waiting leaves a gap in Guam’s defense during FY2027–FY2028 that the existing THAAD and Aegis systems can’t cover.The optimal mix keeps a high SM-3 share in every raid scenario, which would mean ballistic threats dominate regardless of cost.
 
 • Small changes in assumed kill probabilities flip the recommended mix, which would mean the paper should recommend a decision rule and a data request rather than a specific loadout.
 
