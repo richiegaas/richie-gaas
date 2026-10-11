@@ -4,7 +4,7 @@ capability: economic-research
 engagement: cost-exchange-ratio
 date: 2026-09-25
 status: draft            # draft | committed | superseded
-hypothesis: ""
+hypothesis: "8 Patriot Batteries, 576 MSEs, fielded after FY 2027"
 ---
 
 # Cost-exchange ratio — engagement brief
