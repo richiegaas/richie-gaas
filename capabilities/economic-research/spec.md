@@ -19,8 +19,8 @@ Solver model, structured like the marginal-analysis engagement.
 The research paper (`drafts/2026-10-10-draft.md`, titled "The Global Costs of Patriot Missile
 Deterrence in Guam") asks which mix of interceptors to buy first, then when to buy it. This
 spec and `model.xlsx` cover the first part: the loadout model, its three options and Table 2 of
-the paper. The timing question (the paper's Recommendation) is not modeled here. The brief's
-question is the author's to restate in `docs/briefs/research-brief.md` in their own words.
+the paper. The timing question (the paper's Recommendation) is not modeled here.
+The paper's question is stated in `docs/briefs/research-brief.md`.
 
 ## Success criterion
 The model succeeds if an appropriations staffer can see which interceptor
