@@ -21,8 +21,6 @@ Guam's new missile defense is a roughly $8 billion system spread across 16 sites
 ### Why now, not in general.
 • The loadout is being bought now. GAO reports first deployment in FY2027 and final elements arriving by FY2032 (GAO-25-108187).
 
-• The architecture is still in flux. Development of the AN/TPY-6 radar stopped in January 2025 (GAO), and planners cut the site count from 22 to 16 (Breaking Defense).
-
 • The threat mix is shifting toward cheap cruise missiles and drones, which make expensive interceptors a poor trade. Analysts warn China could fire salvos an order of magnitude larger than Iran's April 2024 strike on Israel.
 
 ### Working hypothesis:  
@@ -36,7 +34,7 @@ Patriot’s real drone capability is negligible, and drones dominate the threat,
 Timing half:
 Lockheed’s production ramp slips, so a FY2029–FY2032 buy would still compete with allies.
 Allied deliveries and unit prices turn out not to respond to U.S. demand, which would mean crowding out isn’t happening.
-Waiting leaves a gap in Guam’s defense during FY2027–FY2028 that the existing THAAD and Aegis systems can’t cover.The optimal mix keeps a high SM-3 share in every raid scenario, which would mean ballistic threats dominate regardless of cost.
+Waiting leaves a gap in Guam’s defense during FY2027–FY2028 that the existing THAAD and Aegis systems can’t cover.
 
 • Small changes in assumed kill probabilities flip the recommended mix, which would mean the paper should recommend a decision rule and a data request rather than a specific loadout.
 
