@@ -28,22 +28,14 @@ Mix: about 8 Patriot batteries with 576 PAC-3 MSE interceptors, about $5.6B, giv
 Timing: buying most of those interceptors in FY2029–FY2032, as Lockheed’s capacity grows toward 2,000 a year, protects Guam without starving Taiwan, Ukraine or the Middle East.
 
 ### How I'd know I was wrong.
-• Mix half:
-With sourced kill probabilities, the Patriot-only option falls far below the optimal mix, more than a gap you set in advance.
-Patriot’s real drone capability is negligible, and drones dominate the threat, so the 49% drone-raid score becomes the deciding number.
-Timing half:
-Lockheed’s production ramp slips, so a FY2029–FY2032 buy would still compete with allies.
-Allied deliveries and unit prices turn out not to respond to U.S. demand, which would mean crowding out isn’t happening.
-Waiting leaves a gap in Guam’s defense during FY2027–FY2028 that the existing THAAD and Aegis systems can’t cover.
+Mix:
+With sourced kill probabilities instead of placeholders, 8 Patriot batteries with 576 MSE fall more than 10 points below the optimal mix in the ballistic-heavy or cruise-heavy raid.
+Evidence shows China could mass large drone raids against Guam, using long-range, ship-launched or air-launched drones. That would make the drone-heavy raid a likely scenario rather than an outlier, and Patriot-only’s 49% score in that raid would then decide against it.
 
-• Small changes in assumed kill probabilities flip the recommended mix, which would mean the paper should recommend a decision rule and a data request rather than a specific loadout.
-
-• The non-interceptor benchmark (hardening) beats every interceptor at the margin, which would mean the real answer is outside the loadout question.
-Scope.
-
-• In: four threat classes covered by about five representative interceptor types; a fixed interceptor budget; annual production caps; three raid scenarios; one non-interceptor benchmark; unclassified cost data.
-
-• Out: radar and command-and-control choices; classified performance data; nuclear deterrence; whether the U.S. should be in the western Pacific.
+Timing:
+Lockheed Martin’s production ramp slips, so PAC-3 MSE capacity is still well short of 2,000 a year by FY2029. A FY2029–FY2032 buy would then still compete with allies.
+Allied delivery dates and PAC-3 unit prices don’t respond to U.S. demand, which would mean crowding out isn’t happening.
+Delaying the Patriot buy leaves a gap in Guam’s defense in FY2027–FY2028 that the existing THAAD and Aegis systems can’t cover.
 
 ### Deliverable. 
 A research paper of about 3,000 words with at least one evidence-bearing figure, a recommendation with a named decision-maker, and an AI-use log. The reader is my MBA micro/macro economics professor, who grades it on the four jobs. The appropriations committees stay the decision-maker inside the paper. The model is an Excel and Solver build, like the marginal-analysis engagement, and the macro section keeps three channels: fiscal policy and opportunity cost, inelastic supply and defense inflation, and trade and input dependence.
