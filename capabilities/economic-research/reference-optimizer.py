@@ -1,13 +1,16 @@
 """Reference optimizer for capabilities/economic-research/model.xlsx.
 
-Independent check of the workbook: a mixed-integer program (scipy.optimize.milp, tangent-line approximation of the concave
-defeat curve, exact re-evaluation) that finds the best loadout for each Table 2 option and raid. Its results are the reference
-values on the workbook's Scenarios sheet and 'Table 2' sheet.
+Independent check of the workbook. Step 1: a mixed-integer program (scipy.optimize.milp) with a tangent-line approximation of the
+concave defeat curve finds a near-optimal loadout for each Table 2 option and raid. Step 2: an exact local search (one-unit moves
+and swaps, evaluated with the workbook's own formula) polishes it, because the tangent approximation can leave a few hundredths of
+a point on the table. The polished results are the reference values on the workbook's Scenarios and Table 2 sheets; Excel Solver,
+started from them, cannot improve on them (see the Scenarios sheet's solver runs).
 
 Usage:  python reference-optimizer.py            # the nine Table 2 cells (writes table2-reference.json)
         python reference-optimizer.py frontier   # best protection at budgets of $2B to $8B, Option 3 (writes frontier-reference.json)
-Requires: numpy, scipy.
+Requires: numpy, scipy. Runs for several minutes.
 """
+import copy
 import json, math
 import numpy as np
 from scipy.optimize import milp, LinearConstraint, Bounds
@@ -135,12 +138,86 @@ def solve(R, b, o, budget=BUDGET, use_min=0.0):
     return dict(b=b, ba=ba, QU=QU, QC=QC, qt=qt, protection=p, shares=shares, spent=spent)
 
 
+def feasible(R, b, ba, QU, QC, o, budget=BUDGET):
+    qt=[sum(QU[i])+sum(QC[i]) for i in range(NT)]
+    for i in range(NT):
+        if qt[i]<0 or (not o["allowed"][i] and qt[i]>0) or qt[i]>CAPS[i]: return False
+        for j in range(NC):
+            if QU[i][j]<0 or QC[i][j]<0: return False
+            if (QU[i][j]>0 or QC[i][j]>0) and RATE[j][i]<=0: return False
+        if i in PAT and sum(QU[i])>0: return False
+    f=min(SITES,PER_BATT*b)/SITES
+    if b==0 and any(sum(r)>0 for r in QC): return False
+    spent=sum(PRICE[i]*qt[i] for i in range(NT))+SYS_AEGIS*ba+SYS_PAT*b+SYS_THAAD
+    if spent>budget+1e-9: return False
+    if qt[3]+qt[4]+qt[5]>MK41*ba: return False
+    if qt[0]/16+qt[1]/12>LAUNCH*b+1e-9: return False
+    if qt[2]>THAAD_CAP: return False
+    if o["full_mse"] and b>0 and qt[1]!=12*LAUNCH*b: return False
+    return True
+
+def value(R,b,QU,QC): return evaluate(R,b,QU,QC)[0]
+
+def polish(R,case,o,budget=BUDGET):
+    """Exact local search from a MILP solution: one-unit increments and one-for-one swaps, accepting a move if it raises protection
+    or leaves it unchanged at a lower cost (so ties are broken toward the cheaper loadout)."""
+    b,ba=case["b"],case["ba"]; QU=copy.deepcopy(case["QU"]); QC=copy.deepcopy(case["QC"])
+    vars_=[(g,i,j) for g in ("U","C") for i in range(NT) for j in range(NC) if RATE[j][i]>0 and o["allowed"][i] and not (g=="U" and i in PAT) and not (g=="C" and b==0)]
+    def grid(g): return QU if g=="U" else QC
+    def spend_now():
+        qt=[sum(QU[i])+sum(QC[i]) for i in range(NT)]
+        return sum(PRICE[i]*qt[i] for i in range(NT))+SYS_AEGIS*ba+SYS_PAT*b+SYS_THAAD
+    best=value(R,b,QU,QC); cur=spend_now()
+    def accept():
+        nonlocal best,cur
+        v=value(R,b,QU,QC); sp=spend_now()
+        if v>best+1e-12 or (v>best-1e-12 and sp<cur-1e-9):
+            best=max(best,v) if v>best else best; cur=sp; return True
+        return False
+    improved=True; it=0
+    while improved and it<400:
+        improved=False; it+=1
+        for (g,i,j) in vars_:                                   # +1
+            grid(g)[i][j]+=1
+            if feasible(R,b,ba,QU,QC,o,budget) and accept(): improved=True
+            else: grid(g)[i][j]-=1
+        for a_ in vars_:                                        # -1 a, +1 c
+            ga,ia,ja=a_
+            for c_ in vars_:
+                if c_==a_ or grid(ga)[ia][ja]<=0: continue
+                gc,ic,jc=c_
+                grid(ga)[ia][ja]-=1; grid(gc)[ic][jc]+=1
+                if feasible(R,b,ba,QU,QC,o,budget) and accept(): improved=True
+                else: grid(ga)[ia][ja]+=1; grid(gc)[ic][jc]-=1
+        if not improved:                                        # -1 a, +1 c, +1 d (when a budget limit binds)
+            for a_ in vars_:
+                ga,ia,ja=a_
+                if grid(ga)[ia][ja]<=0: continue
+                for c_ in vars_:
+                    for d_ in vars_:
+                        if c_==a_ or d_==a_: continue
+                        gc,ic,jc=c_; gd,id_,jd=d_
+                        grid(ga)[ia][ja]-=1; grid(gc)[ic][jc]+=1; grid(gd)[id_][jd]+=1
+                        if feasible(R,b,ba,QU,QC,o,budget) and accept(): improved=True; break
+                        grid(ga)[ia][ja]+=1; grid(gc)[ic][jc]-=1; grid(gd)[id_][jd]-=1
+                    if improved: break
+                if improved: break
+    qt=[sum(QU[i])+sum(QC[i]) for i in range(NT)]
+    p,shares=evaluate(R,b,QU,QC)
+    return dict(case,QU=QU,QC=QC,qt=qt,protection=p,shares=shares,spent=spend_now())
+
 def best(R, o, **kw):
-    out = None
+    cands = []
     for b in o["bs"]:
         r = solve(R, b, o, **kw)
-        if r and (out is None or r["protection"] > out["protection"] + 1e-9):
-            out = r
+        if r:
+            cands.append(r)
+    cands.sort(key=lambda r: -r["protection"])
+    out = None
+    for r in cands[:3]:                       # polish the three best battery counts
+        p = polish(R, r, o, budget=kw.get("budget", BUDGET))
+        if out is None or p["protection"] > out["protection"] + 1e-12:
+            out = p
     return out
 
 

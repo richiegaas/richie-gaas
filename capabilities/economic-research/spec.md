@@ -206,9 +206,13 @@ budget books or contract awards. Production caps are set non-binding (2,000 per 
 
 **Provenance of Table 2.** The `Table 2` sheet lists each of the nine cells next to the workbook's
 reference value and checks that they match, with the steps to reproduce each one in Excel. The
-reference values come from `capabilities/economic-research/reference-optimizer.py`, an independent
-integer program; Excel formulas reproduce each of the nine reference solutions exactly (checked in
-Excel on 2026-10-10). Excel Solver itself has not been run. The same sheet holds the
+reference values come from `capabilities/economic-research/reference-optimizer.py`: an integer
+program followed by an exact local search that breaks ties toward the cheaper loadout. Excel
+formulas reproduce each of the nine reference solutions exactly (checked in Excel on 2026-10-10).
+Excel Solver (GRG Nonlinear) was run the same day: from the reference solutions it matched the
+values for Options 1 and 2; for Option 3 it finished one of three runs and timed out on the
+other two, so the Option 3 mixes are the best found, not proven optimal. From rough starts it
+can stall. The runs are recorded on the Scenarios sheet. The `Table 2` sheet also holds the
 bang-for-the-buck table: best protection at budgets from $2B to $8B.
 
 ## Inputs — the named contract
