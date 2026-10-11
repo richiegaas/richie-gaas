@@ -15,6 +15,14 @@ a fixed interceptor budget, annual production caps, and a mix of threats
 interceptor types maximize expected threats defeated? Built as an Excel and
 Solver model, structured like the marginal-analysis engagement.
 
+## Status note (2026-10-10)
+The research paper (`drafts/2026-10-10-draft.md`, titled "The Global Costs of Patriot Missile
+Deterrence in Guam") no longer asks which interceptor mix to buy. Its Recommendation is about
+when to buy Guam's PAC-3 MSE interceptors, given a fixed supply and the cost to allies.
+This spec and `model.xlsx` are kept as the loadout model; the paper does not report their
+results. The paper's question is the author's to restate in `docs/briefs/research-brief.md`
+in their own words.
+
 ## Success criterion
 The model succeeds if an appropriations staffer can see which interceptor
 mix buys the most protection per dollar, how that mix moves when the raid
