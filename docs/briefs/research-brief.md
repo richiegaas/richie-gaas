@@ -9,6 +9,13 @@ hypothesis: ""
 
 # Cost-exchange ratio — engagement brief
 
+> **Amendment (2026-10-10).** The paper (`drafts/2026-10-10-draft.md`, "The Global Costs of Patriot
+> Missile Deterrence in Guam") no longer asks which interceptor mix to buy. Its Recommendation is about
+> when to buy Guam's PAC-3 MSE interceptors, given a fixed supply and the cost to allies. The Question,
+> Working hypothesis, and "How I'd know I was wrong" sections below describe the earlier "what mix"
+> question and are superseded for the paper. The author restates them in their own words; `spec.md`
+> and `model.xlsx` are kept as the loadout model.
+
 ### Question. 
 Given the Guam Defense System's budget and interceptor production limits, what mix of interceptors defeats the most expected threats per taxpayer dollar across ballistic, cruise, air-breathing, and drone (UAS) attacks? And how should that mix change if China shifts the composition of its raids?
 
